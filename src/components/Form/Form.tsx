@@ -29,19 +29,24 @@ const AMINO_COLORS = {
 interface SequenceProps {
   sequence: string;
   index: number;
-  setIsReferenceMounted?: React.Dispatch<React.SetStateAction<boolean>>;
+  isLastSequence?: boolean;
+  setIsAllSequencesMounted?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
-  ({ sequence, index, setIsReferenceMounted }, ref) => {
+  ({ sequence, index, isLastSequence, setIsAllSequencesMounted }, ref) => {
     useEffect(() => {
-      setIsReferenceMounted?.(() => true);
-    }, [setIsReferenceMounted]);
+      if (!isLastSequence) return;
+
+      setIsAllSequencesMounted?.(() => true);
+    }, [setIsAllSequencesMounted, isLastSequence]);
 
     return (
       <div
         ref={index === 0 ? ref : null}
-        className={`sequence ${index === 0 ? "reference" : ""}`}
+        className={`${styles.sequence} ${
+          index === 0 ? styles.referenceSequence : ""
+        }`}
       >
         {sequence}
       </div>
@@ -61,14 +66,17 @@ export function Form() {
   });
 
   const [sequences, setSequences] = useState<string[]>([]);
-  const [isReferenceMounted, setIsReferenceMounted] = useState<boolean>(false);
+  const [isAllSequencesMounted, setIsAllSequencesMounted] =
+    useState<boolean>(false);
   const referenceSequenceRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isReferenceMounted) return;
-
-    console.log(referenceSequenceRef.current?.clientWidth);
-  }, [isReferenceMounted]);
+    if (!isAllSequencesMounted) return;
+    console.log(
+      referenceSequenceRef.current?.clientWidth,
+      referenceSequenceRef.current?.clientHeight
+    );
+  }, [isAllSequencesMounted]);
 
   const onSubmit = useCallback(
     (data: FormData) => {
@@ -85,7 +93,7 @@ export function Form() {
         return;
       }
 
-      setIsReferenceMounted(() => false);
+      setIsAllSequencesMounted(() => false);
       setSequences(() =>
         Object.values(data).map((value) => value.toUpperCase())
       );
@@ -156,7 +164,8 @@ export function Form() {
               ref={index === 0 ? referenceSequenceRef : null}
               sequence={sequence}
               index={index}
-              setIsReferenceMounted={setIsReferenceMounted}
+              isLastSequence={index === sequences.length - 1}
+              setIsAllSequencesMounted={setIsAllSequencesMounted}
             />
           ))}
         </div>
