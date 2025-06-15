@@ -23,3 +23,23 @@
 .error {
   font-size: 16px;
 }
+
+.sequencesContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sequencesWrapper {
+  position: relative;
+}
+
+.sequence {
+  position: absolute;
+  left: 0;
+  word-break: break-all;
+}
+
+.referenceSequence {
+  position: relative;
+}
