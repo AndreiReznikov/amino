@@ -13,7 +13,7 @@ const allowedCharsRegex = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
 
 const LETTER_WIDTH = 13.19;
 const FONT_SIZE = 24;
-const AMINO_COLORS = {
+const AMINO_COLORS: Record<string, string> = {
   A: "blue",
   B: "green",
   C: "orange",
@@ -43,7 +43,7 @@ const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
 
     return (
       <div
-        ref={index === 0 ? ref : null}
+        ref={ref}
         className={`${styles.sequence} ${
           index === 0 ? styles.referenceSequence : ""
         }`}
@@ -68,15 +68,31 @@ export function Form() {
   const [sequences, setSequences] = useState<string[]>([]);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
-  const referenceSequenceRef = useRef<HTMLDivElement | null>(null);
+  const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (!isAllSequencesMounted) return;
-    console.log(
-      referenceSequenceRef.current?.clientWidth,
-      referenceSequenceRef.current?.clientHeight
+
+    const sequencesCount = sequenceElementsRef.current?.length;
+    const lineHeight = FONT_SIZE * sequencesCount;
+    const referenceSequence = sequenceElementsRef.current[0];
+    const referenceSequenceAminoChain = sequences[0]?.split("");
+    const referenceSequenceColors = referenceSequenceAminoChain.map(
+      (amino) => AMINO_COLORS[amino] ?? "transparent"
     );
-  }, [isAllSequencesMounted]);
+
+    console.log(
+      sequencesCount,
+      lineHeight,
+      referenceSequence,
+      referenceSequenceAminoChain,
+      referenceSequenceColors
+    );
+
+    sequenceElementsRef.current.forEach((sequenceElement) => {
+      sequenceElement?.style.setProperty("background", "aqua");
+    });
+  }, [isAllSequencesMounted, sequences]);
 
   const onSubmit = useCallback(
     (data: FormData) => {
@@ -161,7 +177,11 @@ export function Form() {
           {sequences?.map((sequence, index) => (
             <Sequence
               key={`${sequence}-${index}`}
-              ref={index === 0 ? referenceSequenceRef : null}
+              ref={(node) => {
+                if (node) {
+                  sequenceElementsRef.current[index] = node;
+                }
+              }}
               sequence={sequence}
               index={index}
               isLastSequence={index === sequences.length - 1}
