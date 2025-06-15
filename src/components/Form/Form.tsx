@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import React from "react";
+import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styles from "./form.module.css";
@@ -13,87 +13,80 @@ export function Form() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted },
-    trigger,
-    clearErrors,
-    control,
-  } = useForm<FormData>();
-
-  const [field1Value, field2Value] = useWatch({
-    control,
-    name: ["field1", "field2"],
+    formState: { errors },
+    setError,
+  } = useForm<FormData>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
-
-  useEffect(() => {
-    if (
-      errors.field1?.type === "validate" ||
-      errors.field2?.type === "validate"
-    ) {
-      if (field1Value?.length === field2Value?.length) {
-        clearErrors(["field1", "field2"]);
-      }
-    }
-  }, [field1Value, field2Value, errors, clearErrors]);
-
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
 
   const allowedCharsRegex = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
 
-  const validateLength = (value: string) => {
-    if (!isSubmitted) return true;
-    return (
-      field1Value?.length === field2Value?.length ||
-      "Длины строк должны быть одинаковыми"
-    );
+  const onSubmit = (data: FormData) => {
+    if (data.field1.length !== data.field2.length) {
+      setError("field1", {
+        type: "validate",
+        message: "Длины строк должны быть одинаковыми",
+      });
+      setError("field2", {
+        type: "validate",
+        message: "Длины строк должны быть одинаковыми",
+      });
+      return;
+    }
+
+    console.log("Форма отправлена:", data);
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        variant="standard"
-        label="Эталонная последовательность"
-        placeholder="GIVEQ-CCTSI..."
-        slotProps={{
-          inputLabel: { shrink: true },
-        }}
-        {...register("field1", {
-          required: "Это поле обязательно",
-          pattern: {
-            value: allowedCharsRegex,
-            message: "Допустимы только латинские буквы аминокислот и символ -",
-          },
-          validate: validateLength,
-        })}
-        error={!!errors.field1 && isSubmitted}
-        onBlur={() => trigger("field2")}
-      />
-      {errors.field1 && isSubmitted && (
-        <span style={{ color: "red" }}>{errors.field1.message}</span>
-      )}
+      <div className={styles.inputsContainer}>
+        <div className={styles.textFieldContainer}>
+          <TextField
+            variant="standard"
+            label="Эталонная последовательность"
+            placeholder="GIVEQ-CCTSI..."
+            sx={{ width: "100%" }}
+            {...register("field1", {
+              required: "Это поле обязательно",
+              pattern: {
+                value: allowedCharsRegex,
+                message:
+                  "Допустимы только латинские буквы аминокислот и символ -",
+              },
+            })}
+            error={!!errors.field1}
+            helperText={errors.field1?.message}
+            slotProps={{
+              inputLabel: { shrink: true },
+              formHelperText: { style: { fontSize: "16px" } },
+            }}
+          />
+        </div>
 
-      <TextField
-        variant="standard"
-        label="Целевая последовательность"
-        placeholder="GIVEQ-CCTSI..."
-        slotProps={{
-          inputLabel: { shrink: true },
-        }}
-        {...register("field2", {
-          required: "Это поле обязательно",
-          pattern: {
-            value: allowedCharsRegex,
-            message: "Допустимы только латинские буквы аминокислот и символ -",
-          },
-          validate: validateLength,
-        })}
-        error={!!errors.field2 && isSubmitted}
-        onBlur={() => trigger("field1")}
-      />
-      {errors.field2 && isSubmitted && (
-        <span style={{ color: "red" }}>{errors.field2.message}</span>
-      )}
+        <div className={styles.textFieldContainer}>
+          <TextField
+            variant="standard"
+            label="Целевая последовательность"
+            placeholder="GIVEQ-CCTSI..."
+            sx={{ width: "100%" }}
+            {...register("field2", {
+              required: "Это поле обязательно",
+              pattern: {
+                value: allowedCharsRegex,
+                message:
+                  "Допустимы только латинские буквы аминокислот и символ -",
+              },
+            })}
+            error={!!errors.field2}
+            helperText={errors.field2?.message}
+            slotProps={{
+              inputLabel: { shrink: true },
+              formHelperText: { style: { fontSize: "16px" } },
+            }}
+          />
+        </div>
+      </div>
 
       <Button type="submit" variant="outlined">
         Выравнивание
