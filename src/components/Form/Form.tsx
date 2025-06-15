@@ -88,11 +88,11 @@ export function Form() {
       const sequenceWidth = sequenceElement?.clientWidth ?? 0;
       const sequenceLettersRatio = sequenceWidth / LETTER_WIDTH;
       const rowLettersNumber =
-        sequenceLettersRatio - Math.floor(sequenceLettersRatio) > 0.95
+        sequenceLettersRatio - Math.floor(sequenceLettersRatio) > 0.97
           ? Math.ceil(sequenceLettersRatio)
           : Math.floor(sequenceLettersRatio);
       const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
-      console.log(LETTER_WIDTH * sequence.length, sequenceWidth);
+      console.log(sequenceWidth / LETTER_WIDTH);
       const sequenceColors =
         index === 0
           ? referenceSequenceColors
