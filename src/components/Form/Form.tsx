@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import styles from "./Form.module.css";
@@ -67,8 +61,20 @@ export function Form() {
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
-  console.log(isBackgroundShown);
-  const sequencesBackgrounds: string[] | null = useMemo(() => {
+
+  const setSequencesPosition = useCallback(() => {
+    if (!isAllSequencesMounted) return;
+
+    const sequencesCount = sequenceElementsRef?.current.length;
+
+    sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
+      sequenceElement?.style.setProperty("top", `${index * FONT_SIZE}px`);
+      sequenceElement?.style.setProperty("font-size", `${FONT_SIZE}px`);
+      sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
+    });
+  }, [isAllSequencesMounted]);
+
+  const getSequencesBackgrounds = useCallback(() => {
     if (!isAllSequencesMounted) return null;
 
     const sequencesCount = sequenceElementsRef.current?.length;
@@ -77,12 +83,8 @@ export function Form() {
     const referenceSequenceColors = referenceSequenceAminoChain.map(
       (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
     );
-
+    console.log("update");
     return sequenceElementsRef?.current?.map((sequenceElement, index) => {
-      sequenceElement?.style.setProperty("font-size", `${FONT_SIZE}px`);
-      sequenceElement?.style.setProperty("line-height", `${lineHeight}px`);
-      sequenceElement?.style.setProperty("top", `${index * FONT_SIZE}px`);
-
       const sequence = sequences[index].split("") as AminoAcid[];
       const sequenceWidth = sequenceElement?.clientWidth ?? 0;
       const sequenceLettersRatio = sequenceWidth / LETTER_WIDTH;
@@ -113,25 +115,45 @@ export function Form() {
     });
   }, [isAllSequencesMounted, sequences]);
 
+  const sequencesBackgroundsRef = useRef<string[] | null>(null);
+
   const handleToggleBackground = useCallback(
     () => setIsBackgroundShown((prev) => !prev),
     []
   );
 
   const updateSequencesBackground = useCallback(() => {
+    if (!isBackgroundShown) {
+      sequencesBackgroundsRef.current = null;
+      return;
+    }
+
+    const currentBackgrounds = getSequencesBackgrounds();
+
     sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
       if (!sequenceElement) return;
 
-      sequenceElement.style.background = isBackgroundShown
-        ? sequencesBackgrounds?.[index] ?? ""
-        : "transparent";
+      sequenceElement.style.background = currentBackgrounds?.[index] ?? "";
+      sequencesBackgroundsRef.current = currentBackgrounds;
     });
-  }, [isBackgroundShown, sequencesBackgrounds]);
+  }, [getSequencesBackgrounds, isBackgroundShown]);
 
   useEffect(() => {
     if (!isAllSequencesMounted) return;
 
-    updateSequencesBackground();
+    setSequencesPosition();
+
+    if (sequencesBackgroundsRef?.current) {
+      sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
+        if (!sequenceElement) return;
+        console.log("effect");
+        sequenceElement.style.background = !isBackgroundShown
+          ? "transparent"
+          : sequencesBackgroundsRef.current?.[index] ?? "";
+      });
+    } else {
+      updateSequencesBackground();
+    }
 
     const handleResize = () => updateSequencesBackground();
     window.addEventListener("resize", handleResize);
@@ -139,7 +161,13 @@ export function Form() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isAllSequencesMounted, sequences, updateSequencesBackground]);
+  }, [
+    isAllSequencesMounted,
+    isBackgroundShown,
+    sequences,
+    setSequencesPosition,
+    updateSequencesBackground,
+  ]);
 
   const onSubmit = useCallback(
     (data: FormData) => {
@@ -156,10 +184,11 @@ export function Form() {
         return;
       }
 
-      setIsAllSequencesMounted(() => false);
+      // setIsAllSequencesMounted(() => false);
       setSequences(() =>
         Object.values(data).map((value) => value.toUpperCase())
       );
+      sequencesBackgroundsRef.current = null;
     },
     [setError]
   );
