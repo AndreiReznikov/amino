@@ -1,6 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SelectProps,
+  Switch,
+  TextField,
+} from "@mui/material";
 import styles from "./Form.module.css";
 import { applyComplexGradient } from "./Form.utils";
 import {
@@ -60,6 +69,7 @@ export function Form() {
   const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
+  const [sequenceFontOptions, setSequenceFontOptions] = useState<number>(18);
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const setSequencesPosition = useCallback(() => {
@@ -83,15 +93,18 @@ export function Form() {
     const referenceSequenceColors = referenceSequenceAminoChain.map(
       (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
     );
-    console.log("update");
     return sequenceElementsRef?.current?.map((sequenceElement, index) => {
       const sequence = sequences[index].split("") as AminoAcid[];
       const sequenceWidth = sequenceElement?.clientWidth ?? 0;
-      const sequenceLettersRatio = sequenceWidth / LETTER_WIDTH;
-      const rowLettersNumber =
-        sequenceLettersRatio - Math.floor(sequenceLettersRatio) > 0.97
-          ? Math.ceil(sequenceLettersRatio)
-          : Math.floor(sequenceLettersRatio);
+      const sequenceModelWidth = LETTER_WIDTH * sequence.length;
+      const sequenceRatioWidth =
+        sequenceWidth === Math.floor(sequenceModelWidth)
+          ? sequenceModelWidth
+          : sequenceWidth;
+
+      const sequenceLettersRatio =
+        Math.round((sequenceRatioWidth / LETTER_WIDTH) * 100) / 100;
+      const rowLettersNumber = Math.floor(sequenceLettersRatio);
       const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
 
       const sequenceColors =
@@ -146,7 +159,6 @@ export function Form() {
     if (sequencesBackgroundsRef?.current) {
       sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
         if (!sequenceElement) return;
-        console.log("effect");
         sequenceElement.style.background = !isBackgroundShown
           ? "transparent"
           : sequencesBackgroundsRef.current?.[index] ?? "";
@@ -184,7 +196,6 @@ export function Form() {
         return;
       }
 
-      // setIsAllSequencesMounted(() => false);
       setSequences(() =>
         Object.values(data).map((value) => value.toUpperCase())
       );
@@ -193,10 +204,26 @@ export function Form() {
     [setError]
   );
 
+  const handleSequenceFontOptionsChange = useCallback(
+    (event: SelectChangeEvent<number>) => {
+      setSequenceFontOptions(event?.target.value);
+    },
+    []
+  );
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.configurationPanelContainer}>
+          <Select
+            className={styles.fontOptionsSelector}
+            value={sequenceFontOptions}
+            onChange={handleSequenceFontOptionsChange}
+          >
+            <MenuItem value={18}>Небольшой</MenuItem>
+            <MenuItem value={36}>Средний</MenuItem>
+            <MenuItem value={72}>Крупный</MenuItem>
+          </Select>
           <FormControlLabel
             control={
               <Switch
