@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import styles from "./form.module.css";
+import styles from "./Form.module.css";
 import { applyComplexGradient } from "./Form.utils";
+import { aminoAcidGroupColors, aminoAcidGroups } from "./Form.constants";
+import { AminoAcid } from "./Form.types";
 
 type FormData = {
   field1: string;
@@ -12,20 +14,8 @@ type FormData = {
 
 const allowedCharsRegex = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
 
-const FONT_SIZE = 24;
-const LETTER_WIDTH = 13.19;
-const AMINO_COLORS: Record<string, string> = {
-  A: "blue",
-  R: "green",
-  N: "orange",
-  D: "red",
-  C: "yellow",
-  E: "pink",
-  Q: "purple",
-  G: "orange",
-  H: "pink",
-  I: "purple",
-};
+const FONT_SIZE = 18;
+const LETTER_WIDTH = 9.9;
 
 interface SequenceProps {
   sequence: string;
@@ -74,9 +64,9 @@ export function Form() {
   const updateSequencesBackground = useCallback(() => {
     const sequencesCount = sequenceElementsRef.current?.length;
     const lineHeight = FONT_SIZE * sequencesCount;
-    const referenceSequenceAminoChain = sequences[0]?.split("");
+    const referenceSequenceAminoChain = sequences[0]?.split("") as AminoAcid[];
     const referenceSequenceColors = referenceSequenceAminoChain.map(
-      (amino) => AMINO_COLORS[amino] ?? "transparent"
+      (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
     );
 
     sequenceElementsRef.current.forEach((sequenceElement, index) => {
@@ -84,7 +74,7 @@ export function Form() {
       sequenceElement?.style.setProperty("line-height", `${lineHeight}px`);
       sequenceElement?.style.setProperty("top", `${index * FONT_SIZE}px`);
 
-      const sequence = sequences[index].split("");
+      const sequence = sequences[index].split("") as AminoAcid[];
       const sequenceWidth = sequenceElement?.clientWidth ?? 0;
       const sequenceLettersRatio = sequenceWidth / LETTER_WIDTH;
       const rowLettersNumber =
@@ -92,14 +82,14 @@ export function Form() {
           ? Math.ceil(sequenceLettersRatio)
           : Math.floor(sequenceLettersRatio);
       const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
-      console.log(sequenceWidth / LETTER_WIDTH);
+
       const sequenceColors =
         index === 0
           ? referenceSequenceColors
           : sequence?.map((amino, index) =>
               amino === referenceSequenceAminoChain[index]
                 ? "transparent"
-                : AMINO_COLORS[amino]
+                : aminoAcidGroupColors[aminoAcidGroups[amino]]
             );
 
       applyComplexGradient(sequenceElement, {
