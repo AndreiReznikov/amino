@@ -12,6 +12,10 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
+
+  @media (max-width: 680px) {
+    font-size: 18px !important;
+  }
 }
 
 .fontOptionsSelector {
@@ -23,6 +27,10 @@
   display: flex;
   gap: 20px;
   width: 100%;
+
+  @media (max-width: 680px) {
+    flex-direction: column;
+  }
 }
 
 .textFieldContainer {
