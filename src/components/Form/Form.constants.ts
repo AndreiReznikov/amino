@@ -1,5 +1,9 @@
 import { AminoAcid, AminoAcidGroup } from "./Form.types";
 
+export const ALLOWED_CHARS_REGEX = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
+export const FONT_SIZE = 18;
+export const LETTER_WIDTH = 9.9;
+
 export const aminoAcidGroups: Record<AminoAcid, AminoAcidGroup> = {
   C: "cysteine", // Cysteine (special case)
   G: "glycine", // Glycine (special case)

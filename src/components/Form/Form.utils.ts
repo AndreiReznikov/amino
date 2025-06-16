@@ -1,4 +1,4 @@
-export function applyComplexGradient(element: any, options: any) {
+export function applyComplexGradient(element: any, options: any): string {
   const {
     colorStep,
     gradientCount,
@@ -57,6 +57,6 @@ export function applyComplexGradient(element: any, options: any) {
     }
   }
 
-  element.style.background = backgroundValue;
+  return backgroundValue;
 };
 

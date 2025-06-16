@@ -1,21 +1,27 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import styles from "./Form.module.css";
 import { applyComplexGradient } from "./Form.utils";
-import { aminoAcidGroupColors, aminoAcidGroups } from "./Form.constants";
+import {
+  ALLOWED_CHARS_REGEX,
+  aminoAcidGroupColors,
+  aminoAcidGroups,
+  FONT_SIZE,
+  LETTER_WIDTH,
+} from "./Form.constants";
 import { AminoAcid } from "./Form.types";
 
 type FormData = {
   field1: string;
   field2: string;
 };
-
-const allowedCharsRegex = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
-
-const FONT_SIZE = 18;
-const LETTER_WIDTH = 9.9;
 
 interface SequenceProps {
   sequence: string;
@@ -57,11 +63,14 @@ export function Form() {
   });
 
   const [sequences, setSequences] = useState<string[]>([]);
+  const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
+  console.log(isBackgroundShown);
+  const sequencesBackgrounds: string[] | null = useMemo(() => {
+    if (!isAllSequencesMounted) return null;
 
-  const updateSequencesBackground = useCallback(() => {
     const sequencesCount = sequenceElementsRef.current?.length;
     const lineHeight = FONT_SIZE * sequencesCount;
     const referenceSequenceAminoChain = sequences[0]?.split("") as AminoAcid[];
@@ -69,7 +78,7 @@ export function Form() {
       (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
     );
 
-    sequenceElementsRef.current.forEach((sequenceElement, index) => {
+    return sequenceElementsRef?.current?.map((sequenceElement, index) => {
       sequenceElement?.style.setProperty("font-size", `${FONT_SIZE}px`);
       sequenceElement?.style.setProperty("line-height", `${lineHeight}px`);
       sequenceElement?.style.setProperty("top", `${index * FONT_SIZE}px`);
@@ -92,7 +101,7 @@ export function Form() {
                 : aminoAcidGroupColors[aminoAcidGroups[amino]]
             );
 
-      applyComplexGradient(sequenceElement, {
+      return applyComplexGradient(sequenceElement, {
         colorStep: LETTER_WIDTH,
         gradientCount: rowsNumber,
         colorsPerGradient: rowLettersNumber,
@@ -102,7 +111,22 @@ export function Form() {
         yStep: lineHeight,
       });
     });
-  }, [sequences]);
+  }, [isAllSequencesMounted, sequences]);
+
+  const handleToggleBackground = useCallback(
+    () => setIsBackgroundShown((prev) => !prev),
+    []
+  );
+
+  const updateSequencesBackground = useCallback(() => {
+    sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
+      if (!sequenceElement) return;
+
+      sequenceElement.style.background = isBackgroundShown
+        ? sequencesBackgrounds?.[index] ?? ""
+        : "transparent";
+    });
+  }, [isBackgroundShown, sequencesBackgrounds]);
 
   useEffect(() => {
     if (!isAllSequencesMounted) return;
@@ -143,6 +167,17 @@ export function Form() {
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.configurationPanelContainer}>
+          <FormControlLabel
+            control={
+              <Switch
+                onClick={handleToggleBackground}
+                checked={isBackgroundShown}
+              />
+            }
+            label="Фон"
+          />
+        </div>
         <div className={styles.inputsContainer}>
           <div className={styles.textFieldContainer}>
             <TextField
@@ -153,7 +188,7 @@ export function Form() {
               {...register("field1", {
                 required: "Это поле обязательно",
                 pattern: {
-                  value: allowedCharsRegex,
+                  value: ALLOWED_CHARS_REGEX,
                   message:
                     "Допустимы только латинские буквы аминокислот и символ -",
                 },
@@ -176,7 +211,7 @@ export function Form() {
               {...register("field2", {
                 required: "Это поле обязательно",
                 pattern: {
-                  value: allowedCharsRegex,
+                  value: ALLOWED_CHARS_REGEX,
                   message:
                     "Допустимы только латинские буквы аминокислот и символ -",
                 },
