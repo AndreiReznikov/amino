@@ -1,8 +1,11 @@
 import { AminoAcid, AminoAcidGroup } from "./Form.types";
 
 export const ALLOWED_CHARS_REGEX = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
-export const FONT_SIZE = 18;
-export const LETTER_WIDTH = 9.9;
+export const SEQUENCE_FONT_OPTIONS = {
+  small: { fontSize: 18, letterWidth: 9.9, label: "Небольшой" },
+  medium: { fontSize: 36, letterWidth: 19.8, label: "Средний" },
+  large: { fontSize: 72, letterWidth: 39.5, label: "Крупный" },
+} as const;
 
 export const aminoAcidGroups: Record<AminoAcid, AminoAcidGroup> = {
   C: "cysteine", // Cysteine (special case)

@@ -6,7 +6,6 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  SelectProps,
   Switch,
   TextField,
 } from "@mui/material";
@@ -16,8 +15,7 @@ import {
   ALLOWED_CHARS_REGEX,
   aminoAcidGroupColors,
   aminoAcidGroups,
-  FONT_SIZE,
-  LETTER_WIDTH,
+  SEQUENCE_FONT_OPTIONS,
 } from "./Form.constants";
 import { AminoAcid } from "./Form.types";
 
@@ -32,6 +30,8 @@ interface SequenceProps {
   isLastSequence?: boolean;
   setIsAllSequencesMounted?: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
 const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
   ({ sequence, index, isLastSequence, setIsAllSequencesMounted }, ref) => {
@@ -69,8 +69,10 @@ export function Form() {
   const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
-  const [sequenceFontOptions, setSequenceFontOptions] = useState<number>(18);
+  const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
+  const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
 
   const setSequencesPosition = useCallback(() => {
     if (!isAllSequencesMounted) return;
@@ -78,17 +80,17 @@ export function Form() {
     const sequencesCount = sequenceElementsRef?.current.length;
 
     sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
-      sequenceElement?.style.setProperty("top", `${index * FONT_SIZE}px`);
-      sequenceElement?.style.setProperty("font-size", `${FONT_SIZE}px`);
+      sequenceElement?.style.setProperty("top", `${index * fontSize}px`);
+      sequenceElement?.style.setProperty("font-size", `${fontSize}px`);
       sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
     });
-  }, [isAllSequencesMounted]);
+  }, [fontSize, isAllSequencesMounted]);
 
   const getSequencesBackgrounds = useCallback(() => {
     if (!isAllSequencesMounted) return null;
 
     const sequencesCount = sequenceElementsRef.current?.length;
-    const lineHeight = FONT_SIZE * sequencesCount;
+    const lineHeight = fontSize * sequencesCount;
     const referenceSequenceAminoChain = sequences[0]?.split("") as AminoAcid[];
     const referenceSequenceColors = referenceSequenceAminoChain.map(
       (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
@@ -96,14 +98,14 @@ export function Form() {
     return sequenceElementsRef?.current?.map((sequenceElement, index) => {
       const sequence = sequences[index].split("") as AminoAcid[];
       const sequenceWidth = sequenceElement?.clientWidth ?? 0;
-      const sequenceModelWidth = LETTER_WIDTH * sequence.length;
+      const sequenceModelWidth = letterWidth * sequence.length;
       const sequenceRatioWidth =
         sequenceWidth === Math.floor(sequenceModelWidth)
           ? sequenceModelWidth
           : sequenceWidth;
 
       const sequenceLettersRatio =
-        Math.round((sequenceRatioWidth / LETTER_WIDTH) * 100) / 100;
+        Math.round((sequenceRatioWidth / letterWidth) * 100) / 100;
       const rowLettersNumber = Math.floor(sequenceLettersRatio);
       const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
 
@@ -117,16 +119,16 @@ export function Form() {
             );
 
       return applyComplexGradient(sequenceElement, {
-        colorStep: LETTER_WIDTH,
+        colorStep: letterWidth,
         gradientCount: rowsNumber,
         colorsPerGradient: rowLettersNumber,
-        rowHeight: FONT_SIZE,
+        rowHeight: fontSize,
         colorSets: sequenceColors,
-        initialY: (lineHeight - FONT_SIZE) / 2,
+        initialY: (lineHeight - fontSize) / 2,
         yStep: lineHeight,
       });
     });
-  }, [isAllSequencesMounted, sequences]);
+  }, [fontSize, isAllSequencesMounted, letterWidth, sequences]);
 
   const sequencesBackgroundsRef = useRef<string[] | null>(null);
 
@@ -159,6 +161,7 @@ export function Form() {
     if (sequencesBackgroundsRef?.current) {
       sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
         if (!sequenceElement) return;
+
         sequenceElement.style.background = !isBackgroundShown
           ? "transparent"
           : sequencesBackgroundsRef.current?.[index] ?? "";
@@ -204,9 +207,11 @@ export function Form() {
     [setError]
   );
 
-  const handleSequenceFontOptionsChange = useCallback(
-    (event: SelectChangeEvent<number>) => {
-      setSequenceFontOptions(event?.target.value);
+  const handleSequenceSizeChange = useCallback(
+    (event: SelectChangeEvent<SequenceSize>) => {
+      setSequenceSize(event.target.value);
+
+      sequencesBackgroundsRef.current = null;
     },
     []
   );
@@ -217,12 +222,14 @@ export function Form() {
         <div className={styles.configurationPanelContainer}>
           <Select
             className={styles.fontOptionsSelector}
-            value={sequenceFontOptions}
-            onChange={handleSequenceFontOptionsChange}
+            value={sequenceSize}
+            onChange={handleSequenceSizeChange}
           >
-            <MenuItem value={18}>Небольшой</MenuItem>
-            <MenuItem value={36}>Средний</MenuItem>
-            <MenuItem value={72}>Крупный</MenuItem>
+            {Object.entries(SEQUENCE_FONT_OPTIONS).map(([key, option]) => (
+              <MenuItem key={key} value={key}>
+                {option.label}
+              </MenuItem>
+            ))}
           </Select>
           <FormControlLabel
             control={
