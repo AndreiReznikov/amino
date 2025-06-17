@@ -265,7 +265,7 @@ export const Form: React.FC = () => {
             <TextField
               variant="standard"
               label="Эталонная последовательность"
-              placeholder="GIVEQ-CCTSI..."
+              placeholder="GIVEQ-CCT..."
               sx={{ width: "100%" }}
               {...register("field1", {
                 required: "Это поле обязательно",
@@ -288,7 +288,7 @@ export const Form: React.FC = () => {
             <TextField
               variant="standard"
               label="Целевая последовательность"
-              placeholder="GIVEQ-CCTSI..."
+              placeholder="GIVEQ-CCT..."
               sx={{ width: "100%" }}
               {...register("field2", {
                 required: "Это поле обязательно",
