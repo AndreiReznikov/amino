@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { Button, SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import styles from "./Form.module.css";
 import { createSequenceGradient } from "./Form.utils";
-import { aminoAcidGroupColors, aminoAcidGroups, FIELDS_OPTIONS } from "./Form.constants";
+import { aminoAcidGroupColors, aminoAcidGroups } from "./Form.constants";
 import { AminoAcid } from "./Form.types";
 import { SequencesList } from "../SequencesList";
-import { SequenceInputFields } from "../SequenceInputFields";
-import { ActionsPanel } from "../ActionsPanel";
 import { SEQUENCE_FONT_OPTIONS } from "../ActionsPanel/ActionsPanel.constants";
-import { Legend } from "../Legend";
+import { SequencesForm } from "../SequencesForm";
 
 type FormData = {
   field1: string;
@@ -19,13 +16,6 @@ type FormData = {
 type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
 export const Form: React.FC = () => {
-  const methods = useForm<FormData>({
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
-  });
-
-  const { handleSubmit, setError } = methods;
-
   const [sequences, setSequences] = useState<string[]>([]);
   const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
@@ -33,6 +23,8 @@ export const Form: React.FC = () => {
   const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
 
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sequencesBackgroundsRef = useRef<string[] | null>(null);
+
   const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
   const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
 
@@ -92,8 +84,6 @@ export const Form: React.FC = () => {
     });
   }, [fontSize, isAllSequencesMounted, letterWidth, sequences]);
 
-  const sequencesBackgroundsRef = useRef<string[] | null>(null);
-
   const handleToggleBackground = useCallback(
     () => setIsBackgroundShown((prev) => !prev),
     []
@@ -146,26 +136,9 @@ export const Form: React.FC = () => {
     updateSequencesBackground,
   ]);
 
-  const onSubmit = useCallback(
-    (data: FormData) => {
-      if (data.field1.length !== data.field2.length) {
-        FIELDS_OPTIONS.forEach((field) => {
-          setError(field.name as keyof FormData, {
-            type: "validate",
-            message: "Длины строк должны быть одинаковыми",
-          });
-        });
-
-        return;
-      }
-
-      setSequences(() =>
-        Object.values(data).map((value) => value.toUpperCase())
-      );
-      sequencesBackgroundsRef.current = null;
-    },
-    [setError]
-  );
+  const handleFormSubmit = useCallback((data: FormData) => {
+    setSequences(() => Object.values(data).map((value) => value.toUpperCase()));
+  }, []);
 
   const handleSequenceSizeChange = useCallback(
     (event: SelectChangeEvent<SequenceSize>) => {
@@ -188,27 +161,15 @@ export const Form: React.FC = () => {
 
   return (
     <>
-      <FormProvider {...methods}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.configurationPanelContainer}>
-            <Legend />
-            <ActionsPanel
-              onReset={handleResetSequences}
-              onSelect={handleSequenceSizeChange}
-              onSwitch={handleToggleBackground}
-              size={sequenceSize}
-              checked={isBackgroundShown}
-            />
-          </div>
-          <div className={styles.inputsContainer}>
-            <SequenceInputFields fields={FIELDS_OPTIONS} />
-          </div>
-
-          <Button type="submit" variant="outlined">
-            Выравнивание
-          </Button>
-        </form>
-      </FormProvider>
+      <SequencesForm
+        onSubmit={handleFormSubmit}
+        onSelect={handleSequenceSizeChange}
+        onReset={handleResetSequences}
+        onSwitch={handleToggleBackground}
+        size={sequenceSize}
+        checked={isBackgroundShown}
+        backgroundsRef={sequencesBackgroundsRef}
+      />
       <div className={styles.sequencesContainer}>
         <div className={styles.sequencesWrapper}>
           <SequencesList

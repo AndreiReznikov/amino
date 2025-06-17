@@ -1,0 +1,86 @@
+import React, { useCallback } from "react";
+import { Button, SelectChangeEvent } from "@mui/material";
+import { useForm, FormProvider } from "react-hook-form";
+import { ActionsPanel } from "../ActionsPanel";
+import { Legend } from "../Legend";
+import { SequenceInputFields } from "../SequenceInputFields";
+import { FIELDS_OPTIONS } from "../SequencesPage/Form.constants";
+import { SEQUENCE_FONT_OPTIONS } from "../ActionsPanel/ActionsPanel.constants";
+import styles from "./SequencesForm.module.css";
+
+type FormData = {
+  field1: string;
+  field2: string;
+};
+
+type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
+
+interface SequencesFormProps {
+  onReset: () => void;
+  onSwitch: () => void;
+  onSubmit: (data: FormData) => void;
+  onSelect: (event: SelectChangeEvent<SequenceSize>) => void;
+  size: keyof typeof SEQUENCE_FONT_OPTIONS;
+  checked: boolean;
+  backgroundsRef: React.RefObject<string[] | null>;
+}
+
+export const SequencesForm: React.FC<SequencesFormProps> = ({
+  onReset,
+  onSelect,
+  onSubmit,
+  onSwitch,
+  size,
+  checked,
+  backgroundsRef,
+}) => {
+  const methods = useForm<FormData>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
+
+  const { handleSubmit, setError } = methods;
+
+  const onFormSubmit = useCallback(
+    (data: FormData) => {
+      if (data.field1.length !== data.field2.length) {
+        FIELDS_OPTIONS.forEach((field) => {
+          setError(field.name as keyof FormData, {
+            type: "validate",
+            message: "Длины строк должны быть одинаковыми",
+          });
+        });
+
+        return;
+      }
+
+      onSubmit(data);
+      backgroundsRef.current = null;
+    },
+    [backgroundsRef, onSubmit, setError]
+  );
+
+  return (
+    <FormProvider {...methods}>
+      <form className={styles.form} onSubmit={handleSubmit(onFormSubmit)}>
+        <div className={styles.configurationPanelContainer}>
+          <Legend />
+          <ActionsPanel
+            onReset={onReset}
+            onSelect={onSelect}
+            onSwitch={onSwitch}
+            size={size}
+            checked={checked}
+          />
+        </div>
+        <div className={styles.inputsContainer}>
+          <SequenceInputFields fields={FIELDS_OPTIONS} />
+        </div>
+
+        <Button type="submit" variant="outlined">
+          Выравнивание
+        </Button>
+      </form>
+    </FormProvider>
+  );
+};
