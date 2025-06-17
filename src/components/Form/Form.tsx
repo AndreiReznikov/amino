@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import styles from "./Form.module.css";
-import { applyComplexGradient } from "./Form.utils";
+import { createSequenceGradient } from "./Form.utils";
 import {
   ALLOWED_CHARS_REGEX,
   aminoAcidGroupColors,
@@ -18,6 +18,7 @@ import {
   SEQUENCE_FONT_OPTIONS,
 } from "./Form.constants";
 import { AminoAcid } from "./Form.types";
+import { AminoAcidLegendPopover } from "../Popover";
 
 type FormData = {
   field1: string;
@@ -70,6 +71,9 @@ export function Form() {
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
   const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
   const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
   const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
@@ -118,7 +122,7 @@ export function Form() {
                 : aminoAcidGroupColors[aminoAcidGroups[amino]]
             );
 
-      return applyComplexGradient(sequenceElement, {
+      return createSequenceGradient({
         colorStep: letterWidth,
         gradientCount: rowsNumber,
         colorsPerGradient: rowLettersNumber,
@@ -222,33 +226,62 @@ export function Form() {
     sequencesBackgroundsRef.current = null;
   }, []);
 
+  const handleLegendButtonClick = useCallback(() => {
+    setAnchorEl(buttonRef.current);
+  }, []);
+
+  const handleLegendButtonClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.configurationPanelContainer}>
-          <Button onClick={handleResetSequences} type="reset" variant="contained">
-            Очистить
-          </Button>
-          <Select
-            className={styles.fontOptionsSelector}
-            value={sequenceSize}
-            onChange={handleSequenceSizeChange}
-          >
-            {Object.entries(SEQUENCE_FONT_OPTIONS).map(([key, option]) => (
-              <MenuItem key={key} value={key}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormControlLabel
-            control={
-              <Switch
-                onClick={handleToggleBackground}
-                checked={isBackgroundShown}
-              />
-            }
-            label="Фон"
-          />
+          <div className={styles.legendContainer}>
+            <Button
+              ref={buttonRef}
+              variant="outlined"
+              onClick={handleLegendButtonClick}
+            >
+              Легенда
+            </Button>
+
+            <AminoAcidLegendPopover
+              open={Boolean(anchorEl)}
+              anchorEl={anchorEl}
+              onClose={handleLegendButtonClose}
+            />
+          </div>
+          <div className={styles.panelActionsContainer}>
+            <Button
+              onClick={handleResetSequences}
+              type="reset"
+              variant="contained"
+            >
+              Очистить
+            </Button>
+            <Select
+              className={styles.fontOptionsSelector}
+              value={sequenceSize}
+              onChange={handleSequenceSizeChange}
+            >
+              {Object.entries(SEQUENCE_FONT_OPTIONS).map(([key, option]) => (
+                <MenuItem key={key} value={key}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormControlLabel
+              control={
+                <Switch
+                  onClick={handleToggleBackground}
+                  checked={isBackgroundShown}
+                />
+              }
+              label="Фон"
+            />
+          </div>
         </div>
         <div className={styles.inputsContainer}>
           <div className={styles.textFieldContainer}>

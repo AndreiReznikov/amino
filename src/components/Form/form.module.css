@@ -10,12 +10,14 @@
 
 .configurationPanelContainer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
+}
 
-  @media (max-width: 680px) {
-    font-size: 18px !important;
-  }
+.panelActionsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .fontOptionsSelector {

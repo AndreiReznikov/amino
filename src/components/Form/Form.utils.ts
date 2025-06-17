@@ -1,4 +1,4 @@
-export function applyComplexGradient(element: any, options: any): string {
+export function createSequenceGradient(options: any): string {
   const {
     colorStep,
     gradientCount,

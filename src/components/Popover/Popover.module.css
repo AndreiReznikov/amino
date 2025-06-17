@@ -1,0 +1,84 @@
+.popoverPaper {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  /* margin-top: 60px !important; */
+}
+
+.container {
+  width: 100%;
+}
+
+.groupsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.groupItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .groupItem {
+    width: calc(50% - 16px);
+  }
+}
+
+@media (min-width: 900px) {
+  .groupItem {
+    width: calc(33.333% - 16px);
+  }
+}
+
+.colorSquare {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.aminoAcidsContainer {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .aminoAcidsContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .aminoAcidsContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .aminoAcidsContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.aminoAcidItem {
+  display: flex;
+  align-items: center;
+}
+
+.aminoAcidSymbol {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
