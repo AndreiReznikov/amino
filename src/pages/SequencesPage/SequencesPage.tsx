@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { SelectChangeEvent } from "@mui/material";
 import styles from "./SequencesPage.module.css";
-import { createSequenceGradient } from "./SequencesPage.utils";
-import { aminoAcidGroupColors, aminoAcidGroups } from "./SequencesPage.constants";
-import { AminoAcid } from "./SequencesPage.types";
 import { SequencesList } from "../../components/SequencesList";
-import { SEQUENCE_FONT_OPTIONS } from "../../components/ActionsPanel/ActionsPanel.constants";
 import { SequencesForm } from "../../components/SequencesForm";
+import {
+  useSequencesBackground,
+} from "./SequencesPage.hooks";
+import { SelectChangeEvent } from "@mui/material";
+import { SEQUENCE_FONT_OPTIONS } from "../../components/ActionsPanel/ActionsPanel.constants";
 
 type FormData = {
   field1: string;
@@ -23,10 +23,47 @@ export const SequencesPage: React.FC = () => {
   const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
 
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const sequencesBackgroundsRef = useRef<string[] | null>(null);
 
   const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
   const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
+
+  const { sequencesBackgroundsRef, updateSequencesBackground } =
+    useSequencesBackground({
+      sequences,
+      isBackgroundShown,
+      isAllSequencesMounted,
+      fontSize,
+      letterWidth,
+      sequenceElementsRef,
+    });
+
+  const handleFormSubmit = useCallback((data: FormData) => {
+    setSequences(() => Object.values(data).map((value) => value.toUpperCase()));
+  }, []);
+
+  const handleToggleBackground = useCallback(
+    () => setIsBackgroundShown((prev) => !prev),
+    []
+  );
+
+  const handleSequenceSizeChange = useCallback(
+    (event: SelectChangeEvent<SequenceSize>) => {
+      setSequenceSize(event.target.value);
+
+      sequencesBackgroundsRef.current = null;
+    },
+    [sequencesBackgroundsRef]
+  );
+
+  const handleResetSequences = useCallback(() => {
+    setSequences([]);
+    setIsAllSequencesMounted(false);
+    sequencesBackgroundsRef.current = null;
+  }, [sequencesBackgroundsRef]);
+
+  const onLastSequenceRender = useCallback(() => {
+    setIsAllSequencesMounted(true);
+  }, []);
 
   const setSequencesPosition = useCallback(() => {
     if (!isAllSequencesMounted) return;
@@ -38,72 +75,7 @@ export const SequencesPage: React.FC = () => {
       sequenceElement?.style.setProperty("font-size", `${fontSize}px`);
       sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
     });
-  }, [fontSize, isAllSequencesMounted]);
-
-  const getSequencesBackgrounds = useCallback(() => {
-    if (!isAllSequencesMounted) return null;
-
-    const sequencesCount = sequenceElementsRef.current?.length;
-    const lineHeight = fontSize * sequencesCount;
-    const referenceSequenceAminoChain = sequences[0]?.split("") as AminoAcid[];
-    const referenceSequenceColors = referenceSequenceAminoChain?.map(
-      (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
-    );
-    return sequenceElementsRef?.current?.map((sequenceElement, index) => {
-      const sequence = sequences[index].split("") as AminoAcid[];
-      const sequenceWidth = sequenceElement?.clientWidth ?? 0;
-      const sequenceModelWidth = letterWidth * sequence.length;
-      const sequenceRatioWidth =
-        sequenceWidth === Math.floor(sequenceModelWidth)
-          ? sequenceModelWidth
-          : sequenceWidth;
-
-      const sequenceLettersRatio =
-        Math.round((sequenceRatioWidth / letterWidth) * 100) / 100;
-      const rowLettersNumber = Math.floor(sequenceLettersRatio);
-      const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
-
-      const sequenceColors =
-        index === 0
-          ? referenceSequenceColors
-          : sequence?.map((amino, index) =>
-              amino === referenceSequenceAminoChain[index]
-                ? "transparent"
-                : aminoAcidGroupColors[aminoAcidGroups[amino]]
-            );
-
-      return createSequenceGradient({
-        colorStep: letterWidth,
-        gradientCount: rowsNumber,
-        colorsPerGradient: rowLettersNumber,
-        rowHeight: fontSize,
-        colorSets: sequenceColors,
-        initialY: (lineHeight - fontSize) / 2,
-        yStep: lineHeight,
-      });
-    });
-  }, [fontSize, isAllSequencesMounted, letterWidth, sequences]);
-
-  const handleToggleBackground = useCallback(
-    () => setIsBackgroundShown((prev) => !prev),
-    []
-  );
-
-  const updateSequencesBackground = useCallback(() => {
-    if (!isBackgroundShown) {
-      sequencesBackgroundsRef.current = null;
-      return;
-    }
-
-    const currentBackgrounds = getSequencesBackgrounds();
-
-    sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
-      if (!sequenceElement) return;
-
-      sequenceElement.style.background = currentBackgrounds?.[index] ?? "";
-      sequencesBackgroundsRef.current = currentBackgrounds;
-    });
-  }, [getSequencesBackgrounds, isBackgroundShown]);
+  }, [fontSize, isAllSequencesMounted, sequenceElementsRef]);
 
   useEffect(() => {
     if (!isAllSequencesMounted) return;
@@ -131,33 +103,12 @@ export const SequencesPage: React.FC = () => {
   }, [
     isAllSequencesMounted,
     isBackgroundShown,
+    sequenceElementsRef,
     sequences,
+    sequencesBackgroundsRef,
     setSequencesPosition,
     updateSequencesBackground,
   ]);
-
-  const handleFormSubmit = useCallback((data: FormData) => {
-    setSequences(() => Object.values(data).map((value) => value.toUpperCase()));
-  }, []);
-
-  const handleSequenceSizeChange = useCallback(
-    (event: SelectChangeEvent<SequenceSize>) => {
-      setSequenceSize(event.target.value);
-
-      sequencesBackgroundsRef.current = null;
-    },
-    []
-  );
-
-  const handleResetSequences = useCallback(() => {
-    setSequences([]);
-    setIsAllSequencesMounted(false);
-    sequencesBackgroundsRef.current = null;
-  }, []);
-
-  const onLastSequenceRender = useCallback(() => {
-    setIsAllSequencesMounted(true);
-  }, []);
 
   return (
     <>
