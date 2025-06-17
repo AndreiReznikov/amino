@@ -4,7 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { ActionsPanel } from "../ActionsPanel";
 import { Legend } from "../Legend";
 import { SequenceInputFields } from "../SequenceInputFields";
-import { FIELDS_OPTIONS } from "../SequencesPage/Form.constants";
+import { FIELDS_OPTIONS } from "../../pages/SequencesPage/SequencesPage.constants";
 import { SEQUENCE_FONT_OPTIONS } from "../ActionsPanel/ActionsPanel.constants";
 import styles from "./SequencesForm.module.css";
 

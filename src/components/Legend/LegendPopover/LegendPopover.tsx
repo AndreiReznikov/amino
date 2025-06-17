@@ -6,8 +6,8 @@ import styles from "./LegendPopover.module.css";
 import {
   aminoAcidGroupColors,
   aminoAcidGroups,
-} from "../../SequencesPage/Form.constants";
-import { AminoAcidGroup, AminoAcid } from "../../SequencesPage/Form.types";
+} from "../../../pages/SequencesPage/SequencesPage.constants";
+import { AminoAcidGroup, AminoAcid } from "../../../pages/SequencesPage/SequencesPage.types";
 
 interface LegendPopoverProps {
   open: boolean;

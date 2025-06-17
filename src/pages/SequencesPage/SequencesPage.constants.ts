@@ -1,4 +1,4 @@
-import { AminoAcid, AminoAcidGroup } from "./Form.types";
+import { AminoAcid, AminoAcidGroup } from "./SequencesPage.types";
 
 export const ALLOWED_CHARS_REGEX = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
 

@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SelectChangeEvent } from "@mui/material";
-import styles from "./Form.module.css";
-import { createSequenceGradient } from "./Form.utils";
-import { aminoAcidGroupColors, aminoAcidGroups } from "./Form.constants";
-import { AminoAcid } from "./Form.types";
-import { SequencesList } from "../SequencesList";
-import { SEQUENCE_FONT_OPTIONS } from "../ActionsPanel/ActionsPanel.constants";
-import { SequencesForm } from "../SequencesForm";
+import styles from "./SequencesPage.module.css";
+import { createSequenceGradient } from "./SequencesPage.utils";
+import { aminoAcidGroupColors, aminoAcidGroups } from "./SequencesPage.constants";
+import { AminoAcid } from "./SequencesPage.types";
+import { SequencesList } from "../../components/SequencesList";
+import { SEQUENCE_FONT_OPTIONS } from "../../components/ActionsPanel/ActionsPanel.constants";
+import { SequencesForm } from "../../components/SequencesForm";
 
 type FormData = {
   field1: string;
@@ -15,7 +15,7 @@ type FormData = {
 
 type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
-export const Form: React.FC = () => {
+export const SequencesPage: React.FC = () => {
   const [sequences, setSequences] = useState<string[]>([]);
   const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =

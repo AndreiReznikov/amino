@@ -1,11 +1,11 @@
 import React from "react";
-import { Form } from "./components/SequencesPage";
+import { SequencesPage } from "./pages/SequencesPage";
 import styles from "./app.module.css";
 
 function App() {
   return (
     <div className={styles.app}>
-      <Form />
+      <SequencesPage />
     </div>
   );
 }

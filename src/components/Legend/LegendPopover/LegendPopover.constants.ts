@@ -1,4 +1,4 @@
-import { AminoAcidGroup } from "../../SequencesPage/Form.types";
+import { AminoAcidGroup } from "../../../pages/SequencesPage/SequencesPage.types";
 
 export const AMINO_GROUP_NAMES: Record<AminoAcidGroup, string> = {
   cysteine: "Цистеин",
