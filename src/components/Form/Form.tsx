@@ -92,7 +92,7 @@ export function Form() {
     const sequencesCount = sequenceElementsRef.current?.length;
     const lineHeight = fontSize * sequencesCount;
     const referenceSequenceAminoChain = sequences[0]?.split("") as AminoAcid[];
-    const referenceSequenceColors = referenceSequenceAminoChain.map(
+    const referenceSequenceColors = referenceSequenceAminoChain?.map(
       (amino) => aminoAcidGroupColors[aminoAcidGroups[amino]] ?? "transparent"
     );
     return sequenceElementsRef?.current?.map((sequenceElement, index) => {
@@ -216,10 +216,19 @@ export function Form() {
     []
   );
 
+  const handleResetSequences = useCallback(() => {
+    setSequences([]);
+    setIsAllSequencesMounted(false);
+    sequencesBackgroundsRef.current = null;
+  }, []);
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.configurationPanelContainer}>
+          <Button onClick={handleResetSequences} type="reset" variant="contained">
+            Очистить
+          </Button>
           <Select
             className={styles.fontOptionsSelector}
             value={sequenceSize}
