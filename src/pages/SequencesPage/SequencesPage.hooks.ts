@@ -73,6 +73,16 @@ export const useSequencesBackground = ({
     sequences,
   ]);
 
+  const setSequencesBackground = useCallback(() => {
+    sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
+      if (!sequenceElement) return;
+
+      sequenceElement.style.background = !isBackgroundShown
+        ? "transparent"
+        : sequencesBackgroundsRef.current?.[index] ?? "";
+    });
+  }, [isBackgroundShown, sequenceElementsRef]);
+
   const updateSequencesBackground = useCallback(() => {
     if (!isBackgroundShown) {
       sequencesBackgroundsRef.current = null;
@@ -94,7 +104,7 @@ export const useSequencesBackground = ({
     sequencesBackgroundsRef,
   ]);
 
-  return { sequencesBackgroundsRef, updateSequencesBackground };
+  return { sequencesBackgroundsRef, setSequencesBackground, updateSequencesBackground };
 };
 
 export const useSequencesPosition = ({

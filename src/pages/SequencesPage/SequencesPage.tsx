@@ -28,15 +28,18 @@ export const SequencesPage: React.FC = () => {
   const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
   const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
 
-  const { sequencesBackgroundsRef, updateSequencesBackground } =
-    useSequencesBackground({
-      sequences,
-      isBackgroundShown,
-      isAllSequencesMounted,
-      fontSize,
-      letterWidth,
-      sequenceElementsRef,
-    });
+  const {
+    sequencesBackgroundsRef,
+    setSequencesBackground,
+    updateSequencesBackground,
+  } = useSequencesBackground({
+    sequences,
+    isBackgroundShown,
+    isAllSequencesMounted,
+    fontSize,
+    letterWidth,
+    sequenceElementsRef,
+  });
 
   const { setSequencesPosition } = useSequencesPosition({
     fontSize,
@@ -78,13 +81,7 @@ export const SequencesPage: React.FC = () => {
     setSequencesPosition();
 
     if (sequencesBackgroundsRef?.current) {
-      sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
-        if (!sequenceElement) return;
-
-        sequenceElement.style.background = !isBackgroundShown
-          ? "transparent"
-          : sequencesBackgroundsRef.current?.[index] ?? "";
-      });
+      setSequencesBackground();
     } else {
       updateSequencesBackground();
     }
@@ -101,6 +98,7 @@ export const SequencesPage: React.FC = () => {
     sequenceElementsRef,
     sequences,
     sequencesBackgroundsRef,
+    setSequencesBackground,
     setSequencesPosition,
     updateSequencesBackground,
   ]);
