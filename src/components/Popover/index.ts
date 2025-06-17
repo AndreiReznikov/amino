@@ -1,1 +1,0 @@
-export { AminoAcidLegendPopover } from "./Popover";

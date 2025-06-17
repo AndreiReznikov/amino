@@ -41,3 +41,24 @@ export const aminoAcidGroupColors: Record<AminoAcidGroup, string> = {
   positivelyCharged: "#BB99FF",
   polarUncharged: "#80BFFF",
 };
+
+export const FIELDS_OPTIONS = [
+  {
+    name: "field1",
+    variant: "standard",
+    label: "Эталонная последовательность",
+    helperTextFontSize: "18px",
+    placeholder: "GIVEQ-CCTSI...",
+    required: "Это поле обязательно",
+    message: "Допустимы только латинские буквы аминокислот и символ -",
+  },
+  {
+    name: "field2",
+    variant: "standard",
+    label: "Целевая последовательность",
+    helperTextFontSize: "18px",
+    placeholder: "GIVEQ-CCTSI...",
+    required: "Это поле обязательно",
+    message: "Допустимы только латинские буквы аминокислот и символ -",
+  },
+];
