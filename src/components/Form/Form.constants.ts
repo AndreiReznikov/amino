@@ -2,9 +2,10 @@ import { AminoAcid, AminoAcidGroup } from "./Form.types";
 
 export const ALLOWED_CHARS_REGEX = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
 export const SEQUENCE_FONT_OPTIONS = {
-  small: { fontSize: 18, letterWidth: 9.9, label: "Небольшой" },
-  medium: { fontSize: 36, letterWidth: 19.8, label: "Средний" },
-  large: { fontSize: 72, letterWidth: 39.5, label: "Крупный" },
+  small: { fontSize: 18, letterWidth: 9.9, label: "Масштаб - 1x" },
+  medium: { fontSize: 36, letterWidth: 19.8, label: "Масштаб - 2x" },
+  xlarge: { fontSize: 54, letterWidth: 29.7, label: "Масштаб - 3x" },
+  large: { fontSize: 72, letterWidth: 39.5, label: "Масштаб - 4x" },
 } as const;
 
 export const aminoAcidGroups: Record<AminoAcid, AminoAcidGroup> = {

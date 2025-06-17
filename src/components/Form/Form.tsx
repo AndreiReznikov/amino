@@ -279,7 +279,7 @@ export const Form: React.FC = () => {
               helperText={errors.field1?.message}
               slotProps={{
                 inputLabel: { shrink: true },
-                formHelperText: { style: { fontSize: "16px" } },
+                formHelperText: { style: { fontSize: "18px" } },
               }}
             />
           </div>
