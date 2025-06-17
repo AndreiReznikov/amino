@@ -4,6 +4,7 @@ import { SequencesList } from "../../components/SequencesList";
 import { SequencesForm } from "../../components/SequencesForm";
 import {
   useSequencesBackground,
+  useSequencesPosition,
 } from "./SequencesPage.hooks";
 import { SelectChangeEvent } from "@mui/material";
 import { SEQUENCE_FONT_OPTIONS } from "../../components/ActionsPanel/ActionsPanel.constants";
@@ -37,6 +38,12 @@ export const SequencesPage: React.FC = () => {
       sequenceElementsRef,
     });
 
+  const { setSequencesPosition } = useSequencesPosition({
+    fontSize,
+    isAllSequencesMounted,
+    sequenceElementsRef,
+  });
+
   const handleFormSubmit = useCallback((data: FormData) => {
     setSequences(() => Object.values(data).map((value) => value.toUpperCase()));
   }, []);
@@ -64,18 +71,6 @@ export const SequencesPage: React.FC = () => {
   const onLastSequenceRender = useCallback(() => {
     setIsAllSequencesMounted(true);
   }, []);
-
-  const setSequencesPosition = useCallback(() => {
-    if (!isAllSequencesMounted) return;
-
-    const sequencesCount = sequenceElementsRef?.current.length;
-
-    sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
-      sequenceElement?.style.setProperty("top", `${index * fontSize}px`);
-      sequenceElement?.style.setProperty("font-size", `${fontSize}px`);
-      sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
-    });
-  }, [fontSize, isAllSequencesMounted, sequenceElementsRef]);
 
   useEffect(() => {
     if (!isAllSequencesMounted) return;

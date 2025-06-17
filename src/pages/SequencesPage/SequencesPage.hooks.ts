@@ -1,5 +1,8 @@
 import { useCallback, useRef } from "react";
-import { aminoAcidGroupColors, aminoAcidGroups } from "./SequencesPage.constants";
+import {
+  aminoAcidGroupColors,
+  aminoAcidGroups,
+} from "./SequencesPage.constants";
 import { AminoAcid } from "./SequencesPage.types";
 import { createSequenceGradient } from "./SequencesPage.utils";
 
@@ -92,4 +95,28 @@ export const useSequencesBackground = ({
   ]);
 
   return { sequencesBackgroundsRef, updateSequencesBackground };
+};
+
+export const useSequencesPosition = ({
+  isAllSequencesMounted,
+  fontSize,
+  sequenceElementsRef,
+}: {
+  isAllSequencesMounted: boolean;
+  fontSize: number;
+  sequenceElementsRef: React.RefObject<(HTMLDivElement | null)[]>;
+}) => {
+  const setSequencesPosition = useCallback(() => {
+    if (!isAllSequencesMounted) return;
+
+    const sequencesCount = sequenceElementsRef?.current.length;
+
+    sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
+      sequenceElement?.style.setProperty("top", `${index * fontSize}px`);
+      sequenceElement?.style.setProperty("font-size", `${fontSize}px`);
+      sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
+    });
+  }, [fontSize, isAllSequencesMounted, sequenceElementsRef]);
+
+  return { setSequencesPosition };
 };
