@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   Button,
   FormControlLabel,
@@ -7,12 +7,10 @@ import {
   Select,
   SelectChangeEvent,
   Switch,
-  TextField,
 } from "@mui/material";
 import styles from "./Form.module.css";
 import { createSequenceGradient } from "./Form.utils";
 import {
-  ALLOWED_CHARS_REGEX,
   aminoAcidGroupColors,
   aminoAcidGroups,
   SEQUENCE_FONT_OPTIONS,
@@ -20,6 +18,7 @@ import {
 import { AminoAcid } from "./Form.types";
 import { AminoAcidLegendPopover } from "../Popover";
 import { SequencesList } from "../SequencesList";
+import { SequenceInputFields } from "../SequenceInputFields";
 
 type FormData = {
   field1: string;
@@ -28,16 +27,34 @@ type FormData = {
 
 type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
+const FIELDS_OPTIONS = [
+  {
+    name: "field1",
+    variant: "standard",
+    label: "Эталонная последовательность",
+    helperTextFontSize: "18px",
+    placeholder: "GIVEQ-CCTSI...",
+    required: "Это поле обязательно",
+    message: "Допустимы только латинские буквы аминокислот и символ -",
+  },
+  {
+    name: "field2",
+    variant: "standard",
+    label: "Целевая последовательность",
+    helperTextFontSize: "18px",
+    placeholder: "GIVEQ-CCTSI...",
+    required: "Это поле обязательно",
+    message: "Допустимы только латинские буквы аминокислот и символ -",
+  },
+];
+
 export const Form: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<FormData>({
+  const methods = useForm<FormData>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
+
+  const { handleSubmit, setError } = methods;
 
   const [sequences, setSequences] = useState<string[]>([]);
   const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
@@ -213,105 +230,63 @@ export const Form: React.FC = () => {
 
   return (
     <>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.configurationPanelContainer}>
-          <div className={styles.legendContainer}>
-            <Button
-              ref={buttonRef}
-              variant="outlined"
-              onClick={handleLegendButtonClick}
-            >
-              Легенда
-            </Button>
+      <FormProvider {...methods}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles.configurationPanelContainer}>
+            <div className={styles.legendContainer}>
+              <Button
+                ref={buttonRef}
+                variant="outlined"
+                onClick={handleLegendButtonClick}
+              >
+                Легенда
+              </Button>
 
-            <AminoAcidLegendPopover
-              open={Boolean(anchorEl)}
-              anchorEl={anchorEl}
-              onClose={handleLegendButtonClose}
-            />
+              <AminoAcidLegendPopover
+                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                onClose={handleLegendButtonClose}
+              />
+            </div>
+            <div className={styles.panelActionsContainer}>
+              <Button
+                onClick={handleResetSequences}
+                type="reset"
+                variant="contained"
+              >
+                Очистить
+              </Button>
+              <Select
+                className={styles.fontOptionsSelector}
+                value={sequenceSize}
+                onChange={handleSequenceSizeChange}
+              >
+                {Object.entries(SEQUENCE_FONT_OPTIONS).map(([key, option]) => (
+                  <MenuItem key={key} value={key}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormControlLabel
+                control={
+                  <Switch
+                    onClick={handleToggleBackground}
+                    checked={isBackgroundShown}
+                  />
+                }
+                label="Фон"
+              />
+            </div>
           </div>
-          <div className={styles.panelActionsContainer}>
-            <Button
-              onClick={handleResetSequences}
-              type="reset"
-              variant="contained"
-            >
-              Очистить
-            </Button>
-            <Select
-              className={styles.fontOptionsSelector}
-              value={sequenceSize}
-              onChange={handleSequenceSizeChange}
-            >
-              {Object.entries(SEQUENCE_FONT_OPTIONS).map(([key, option]) => (
-                <MenuItem key={key} value={key}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormControlLabel
-              control={
-                <Switch
-                  onClick={handleToggleBackground}
-                  checked={isBackgroundShown}
-                />
-              }
-              label="Фон"
-            />
-          </div>
-        </div>
-        <div className={styles.inputsContainer}>
-          <div className={styles.textFieldContainer}>
-            <TextField
-              variant="standard"
-              label="Эталонная последовательность"
-              placeholder="GIVEQ-CCT..."
-              sx={{ width: "100%" }}
-              {...register("field1", {
-                required: "Это поле обязательно",
-                pattern: {
-                  value: ALLOWED_CHARS_REGEX,
-                  message:
-                    "Допустимы только латинские буквы аминокислот и символ -",
-                },
-              })}
-              error={!!errors.field1}
-              helperText={errors.field1?.message}
-              slotProps={{
-                inputLabel: { shrink: true },
-                formHelperText: { style: { fontSize: "18px" } },
-              }}
-            />
+          <div className={styles.inputsContainer}>
+            <SequenceInputFields fields={FIELDS_OPTIONS} />
           </div>
 
-          <div className={styles.textFieldContainer}>
-            <TextField
-              variant="standard"
-              label="Целевая последовательность"
-              placeholder="GIVEQ-CCT..."
-              sx={{ width: "100%" }}
-              {...register("field2", {
-                required: "Это поле обязательно",
-                pattern: {
-                  value: ALLOWED_CHARS_REGEX,
-                  message:
-                    "Допустимы только латинские буквы аминокислот и символ -",
-                },
-              })}
-              error={!!errors.field2}
-              helperText={errors.field2?.message}
-              slotProps={{
-                inputLabel: { shrink: true },
-                formHelperText: { style: { fontSize: "18px" } },
-              }}
-            />
-          </div>
-        </div>
-
-        <Button type="submit" variant="outlined">
-          Выравнивание
-        </Button>
-      </form>
+          <Button type="submit" variant="outlined">
+            Выравнивание
+          </Button>
+        </form>
+      </FormProvider>
       <div className={styles.sequencesContainer}>
         <div className={styles.sequencesWrapper}>
           <SequencesList
