@@ -1,7 +1,9 @@
 .sequence {
   position: absolute;
   left: 0;
+  font-family: monospace;
   word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .referenceSequence {
