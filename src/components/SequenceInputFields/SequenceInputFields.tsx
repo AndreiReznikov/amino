@@ -54,7 +54,6 @@ export const SequenceInputFields: React.FC<SequenceInputFieldsProps> = ({ fields
           />
         </div>
       ))}
-      {console.log("render")}
     </>
   );
 };
