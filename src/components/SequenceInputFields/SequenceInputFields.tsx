@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, TextFieldVariants } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { ALLOWED_CHARS_REGEX } from "../Form/Form.constants";
+import { ALLOWED_CHARS_REGEX } from "../SequencesPage/Form.constants";
 import styles from "./SequenceInputFields.module.css";
 
 type FormData = {

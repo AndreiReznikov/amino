@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 import { Popover, Box, Typography, Paper, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { AminoAcid, AminoAcidGroup } from "../Form/Form.types";
-import { aminoAcidGroupColors, aminoAcidGroups } from "../Form/Form.constants";
+import { AminoAcid, AminoAcidGroup } from "../SequencesPage/Form.types";
+import { aminoAcidGroupColors, aminoAcidGroups } from "../SequencesPage/Form.constants";
 import { AMINO_ACID_NAMES, AMINO_GROUP_NAMES } from "./Popover.constants";
 import styles from "./Popover.module.css";
 

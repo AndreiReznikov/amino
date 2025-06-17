@@ -13,12 +13,13 @@ import { createSequenceGradient } from "./Form.utils";
 import {
   aminoAcidGroupColors,
   aminoAcidGroups,
-  SEQUENCE_FONT_OPTIONS,
 } from "./Form.constants";
 import { AminoAcid } from "./Form.types";
 import { AminoAcidLegendPopover } from "../Popover";
 import { SequencesList } from "../SequencesList";
 import { SequenceInputFields } from "../SequenceInputFields";
+import { ActionsPanel } from "../ActionsPanel";
+import { SEQUENCE_FONT_OPTIONS } from "../ActionsPanel/ActionsPanel.constants";
 
 type FormData = {
   field1: string;
@@ -181,13 +182,11 @@ export const Form: React.FC = () => {
   const onSubmit = useCallback(
     (data: FormData) => {
       if (data.field1.length !== data.field2.length) {
-        setError("field1", {
-          type: "validate",
-          message: "Длины строк должны быть одинаковыми",
-        });
-        setError("field2", {
-          type: "validate",
-          message: "Длины строк должны быть одинаковыми",
+        FIELDS_OPTIONS.forEach((field) => {
+          setError(field.name as keyof FormData, {
+            type: "validate",
+            message: "Длины строк должны быть одинаковыми",
+          });
         });
 
         return;
@@ -248,7 +247,14 @@ export const Form: React.FC = () => {
                 onClose={handleLegendButtonClose}
               />
             </div>
-            <div className={styles.panelActionsContainer}>
+            <ActionsPanel
+              onReset={handleResetSequences}
+              onSelect={handleSequenceSizeChange}
+              onSwitch={handleToggleBackground}
+              size={sequenceSize}
+              checked={isBackgroundShown}
+            />
+            {/* <div className={styles.actionsPanelContainer}>
               <Button
                 onClick={handleResetSequences}
                 type="reset"
@@ -276,7 +282,7 @@ export const Form: React.FC = () => {
                 }
                 label="Фон"
               />
-            </div>
+            </div> */}
           </div>
           <div className={styles.inputsContainer}>
             <SequenceInputFields fields={FIELDS_OPTIONS} />
