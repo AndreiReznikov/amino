@@ -47,18 +47,24 @@ export const FIELDS_OPTIONS = [
     name: "field1",
     variant: "standard",
     label: "Эталонная последовательность",
-    helperTextFontSize: "18px",
+    helperTextFontSize: "14px",
+    helperTextMinHeight: "70px",
     placeholder: "GIVEQ-CCT...",
     required: "Это поле обязательно",
     message: "Допустимы только латинские буквы аминокислот и символ -",
+    defaultMessage:
+      "Только стандартные аминокислоты: A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, V, W, Y и символ - (в любом регистре)",
   },
   {
     name: "field2",
     variant: "standard",
     label: "Целевая последовательность",
-    helperTextFontSize: "18px",
+    helperTextFontSize: "14px",
+    helperTextMinHeight: "70px",
     placeholder: "GIVEQ-CCT...",
     required: "Это поле обязательно",
     message: "Допустимы только латинские буквы аминокислот и символ -",
+    defaultMessage:
+      "Только стандартные аминокислоты: A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, V, W, Y и символ - (в любом регистре)",
   },
 ];
