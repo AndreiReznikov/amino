@@ -55,13 +55,3 @@
   position: relative;
   max-width: 600px;
 }
-
-.sequence {
-  position: absolute;
-  left: 0;
-  word-break: break-all;
-}
-
-.referenceSequence {
-  position: relative;
-}

@@ -19,43 +19,16 @@ import {
 } from "./Form.constants";
 import { AminoAcid } from "./Form.types";
 import { AminoAcidLegendPopover } from "../Popover";
+import { SequencesList } from "../SequencesList";
 
 type FormData = {
   field1: string;
   field2: string;
 };
 
-interface SequenceProps {
-  sequence: string;
-  index: number;
-  isLastSequence?: boolean;
-  setIsAllSequencesMounted?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
-const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
-  ({ sequence, index, isLastSequence, setIsAllSequencesMounted }, ref) => {
-    useEffect(() => {
-      if (!isLastSequence) return;
-
-      setIsAllSequencesMounted?.(() => true);
-    }, [setIsAllSequencesMounted, isLastSequence]);
-
-    return (
-      <div
-        ref={ref}
-        className={`${styles.sequence} ${
-          index === 0 ? styles.referenceSequence : ""
-        }`}
-      >
-        {sequence}
-      </div>
-    );
-  }
-);
-
-export function Form() {
+export const Form: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -234,6 +207,10 @@ export function Form() {
     setAnchorEl(null);
   }, []);
 
+  const onLastSequenceRender = useCallback(() => {
+    setIsAllSequencesMounted(true);
+  }, []);
+
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -325,7 +302,7 @@ export function Form() {
               helperText={errors.field2?.message}
               slotProps={{
                 inputLabel: { shrink: true },
-                formHelperText: { style: { fontSize: "16px" } },
+                formHelperText: { style: { fontSize: "18px" } },
               }}
             />
           </div>
@@ -337,22 +314,13 @@ export function Form() {
       </form>
       <div className={styles.sequencesContainer}>
         <div className={styles.sequencesWrapper}>
-          {sequences?.map((sequence, index) => (
-            <Sequence
-              key={`${sequence}-${index}`}
-              ref={(node) => {
-                if (node) {
-                  sequenceElementsRef.current[index] = node;
-                }
-              }}
-              sequence={sequence}
-              index={index}
-              isLastSequence={index === sequences.length - 1}
-              setIsAllSequencesMounted={setIsAllSequencesMounted}
-            />
-          ))}
+          <SequencesList
+            sequences={sequences}
+            sequenceElements={sequenceElementsRef?.current}
+            onLastRender={onLastSequenceRender}
+          />
         </div>
       </div>
     </>
   );
-}
+};
