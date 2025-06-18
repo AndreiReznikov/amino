@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Button,
   Select,
@@ -26,6 +26,15 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
   size,
   checked,
 }) => {
+  const handleSwitchKeydown = useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      onSwitch();
+    },
+    [onSwitch]
+  );
+
   return (
     <div className={styles.actionsPanelContainer}>
       <Button onClick={onReset} type="reset" variant="outlined">
@@ -43,7 +52,13 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
         ))}
       </Select>
       <FormControlLabel
-        control={<Switch onClick={onSwitch} checked={checked} />}
+        control={
+          <Switch
+            onClick={onSwitch}
+            onKeyDown={handleSwitchKeydown}
+            checked={checked}
+          />
+        }
         label="Фон"
       />
     </div>

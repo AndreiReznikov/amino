@@ -9,7 +9,10 @@ import {
   useSequencesPosition,
 } from "./SequencesPage.hooks";
 import { FormData, SequenceSize } from "./SequencesPage.types";
-import { SEQUENCE_FONT_OPTIONS } from "./SequencesPage.constants";
+import {
+  SEQUENCE_FONT_OPTIONS,
+  TEXT_COPY_DATA_ATTRIBUTE,
+} from "./SequencesPage.constants";
 import styles from "./SequencesPage.module.css";
 
 export const SequencesPage: React.FC = () => {
@@ -27,7 +30,10 @@ export const SequencesPage: React.FC = () => {
 
   useSequenceInteraction(sequenceElementsRef.current);
 
-  const { Notification } = useCopyToClipboard(sequencesContainerRef.current);
+  const { Notification } = useCopyToClipboard(
+    sequencesContainerRef.current,
+    TEXT_COPY_DATA_ATTRIBUTE
+  );
 
   const {
     sequencesBackgroundsRef,
@@ -115,8 +121,8 @@ export const SequencesPage: React.FC = () => {
         checked={isBackgroundShown}
         backgroundsRef={sequencesBackgroundsRef}
       />
-      <div className={styles.sequencesContainer}>
-        <div ref={sequencesContainerRef} className={styles.sequencesWrapper}>
+      <div ref={sequencesContainerRef} className={styles.sequencesContainer}>
+        <div className={styles.sequencesWrapper}>
           <SequencesList
             sequences={sequences}
             sequenceElements={sequenceElementsRef?.current}

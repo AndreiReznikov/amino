@@ -22,10 +22,11 @@ export const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
         className={`${styles.sequence} ${
           index === 0 ? styles.referenceSequence : ""
         }`}
+        tabIndex={0}
+        data-copy-on-enter
       >
         {sequence}
       </div>
     );
   }
 );
-

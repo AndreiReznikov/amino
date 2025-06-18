@@ -1,6 +1,7 @@
 import { AminoAcid, AminoAcidGroup } from "./SequencesPage.types";
 
 export const DEFAULT_SEQUENCE_Z_INDEX = "10";
+export const TEXT_COPY_DATA_ATTRIBUTE = "data-copy-on-enter";
 
 export const SEQUENCE_FONT_OPTIONS = {
   small: { fontSize: 18, letterWidth: 11.02, label: "Масштаб - 1x" },
