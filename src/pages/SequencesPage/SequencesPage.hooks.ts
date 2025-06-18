@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import {
   AMINO_ACID_GROUP_COLORS,
   AMINO_ACID_GROUPS,
-  DEFAULT_SEQUENCE_Z_INDEX,
 } from "./SequencesPage.constants";
 import { AminoAcid } from "./SequencesPage.types";
 import { createSequenceGradient } from "./SequencesPage.utils";
@@ -185,18 +184,18 @@ export const useSequenceInteraction = (
       resetZIndices();
       activeElement = null;
     }
-  }
+  };
 
   const handleMouseMove = (e: MouseEvent) => {
     handlePointerMove(e.clientX, e.clientY);
-  }
+  };
 
   const handleTouchMove = (e: TouchEvent) => {
     if (e.touches.length > 0) {
       const touch = e.touches[0];
       handlePointerMove(touch.clientX, touch.clientY);
     }
-  }
+  };
 
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("touchmove", handleTouchMove);
@@ -206,4 +205,3 @@ export const useSequenceInteraction = (
     document.removeEventListener("touchmove", handleTouchMove);
   };
 };
-
