@@ -44,12 +44,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
         ))}
       </Select>
       <FormControlLabel
-        control={
-          <Switch
-            onClick={onSwitch}
-            checked={checked}
-          />
-        }
+        control={<Switch onClick={onSwitch} checked={checked} />}
         label="Фон"
       />
     </div>
