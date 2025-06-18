@@ -4,7 +4,6 @@
   align-items: center;
   gap: 20px;
   width: 100%;
-  padding: 20px;
 }
 
 .configurationPanelContainer {
@@ -17,6 +16,7 @@
   display: flex;
   gap: 20px;
   width: 100%;
+  margin-top: 40px;
 
   @media (max-width: 680px) {
     flex-direction: column;

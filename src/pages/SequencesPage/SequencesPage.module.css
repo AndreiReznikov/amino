@@ -1,7 +1,12 @@
+.container {
+  padding: 20px;
+}
+
 .sequencesContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .sequencesWrapper {

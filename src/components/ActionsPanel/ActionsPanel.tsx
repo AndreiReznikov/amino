@@ -29,7 +29,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
 }) => {
   return (
     <div className={styles.actionsPanelContainer}>
-      <Button onClick={onReset} type="reset" variant="contained">
+      <Button onClick={onReset} type="reset" variant="outlined">
         Очистить
       </Button>
       <Select

@@ -104,7 +104,7 @@ export const SequencesPage: React.FC = () => {
   ]);
 
   return (
-    <>
+    <div className={styles.container}>
       <SequencesForm
         onSubmit={handleFormSubmit}
         onSelect={handleSequenceSizeChange}
@@ -123,6 +123,6 @@ export const SequencesPage: React.FC = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };

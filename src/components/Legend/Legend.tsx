@@ -21,6 +21,7 @@ export const Legend: React.FC = memo(() => {
           ref={buttonRef}
           variant="outlined"
           onClick={handleLegendButtonClick}
+          color="success"
         >
           Легенда
         </Button>

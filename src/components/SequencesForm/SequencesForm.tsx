@@ -77,7 +77,7 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
           <SequenceInputFields fields={FIELDS_OPTIONS} />
         </div>
 
-        <Button type="submit" variant="outlined">
+        <Button type="submit" variant="contained">
           Выравнивание
         </Button>
       </form>
