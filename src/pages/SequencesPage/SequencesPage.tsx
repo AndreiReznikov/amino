@@ -9,6 +9,7 @@ import {
 } from "./SequencesPage.hooks";
 import { SelectChangeEvent } from "@mui/material";
 import { SEQUENCE_FONT_OPTIONS } from "../../components/ActionsPanel/ActionsPanel.constants";
+import { useCopyToClipboard } from "../../hooks";
 
 type FormData = {
   field1: string;
@@ -24,12 +25,15 @@ export const SequencesPage: React.FC = () => {
     useState<boolean>(false);
   const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
 
+  const sequencesContainerRef = useRef<HTMLDivElement | null>(null);
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
   const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
 
   useSequenceInteraction(sequenceElementsRef.current);
+
+  const { Notification } = useCopyToClipboard(sequencesContainerRef.current);
 
   const {
     sequencesBackgroundsRef,
@@ -118,7 +122,7 @@ export const SequencesPage: React.FC = () => {
         backgroundsRef={sequencesBackgroundsRef}
       />
       <div className={styles.sequencesContainer}>
-        <div className={styles.sequencesWrapper}>
+        <div ref={sequencesContainerRef} className={styles.sequencesWrapper}>
           <SequencesList
             sequences={sequences}
             sequenceElements={sequenceElementsRef?.current}
@@ -126,6 +130,7 @@ export const SequencesPage: React.FC = () => {
           />
         </div>
       </div>
+      <Notification />
     </div>
   );
 };

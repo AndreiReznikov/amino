@@ -206,3 +206,4 @@ export const useSequenceInteraction = (
     document.removeEventListener("touchmove", handleTouchMove);
   };
 };
+
