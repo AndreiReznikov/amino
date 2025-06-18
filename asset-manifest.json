@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/amino/static/css/main.48ff757d.css",
+    "main.js": "/amino/static/js/main.a24dae0b.js",
+    "index.html": "/amino/index.html",
+    "main.48ff757d.css.map": "/amino/static/css/main.48ff757d.css.map",
+    "main.a24dae0b.js.map": "/amino/static/js/main.a24dae0b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.48ff757d.css",
+    "static/js/main.a24dae0b.js"
+  ]
+}
