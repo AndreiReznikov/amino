@@ -7,11 +7,21 @@
   width: 100%;
 }
 
+.title {
+  font-size: 28px;
+}
+
 .groupsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 24px;
+}
+
+.aminoGroupContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .groupItem {
@@ -35,14 +45,14 @@
 .colorSquare {
   width: 24px;
   height: 24px;
-  border-radius: 4px;
   margin-right: 8px;
+  border-radius: 4px;
 }
 
 .aminoAcidsContainer {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
   gap: 16px;
+  grid-template-columns: repeat(1, 1fr);
 }
 
 @media (min-width: 600px) {
@@ -69,14 +79,14 @@
 }
 
 .aminoAcidSymbol {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  margin-right: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 4px;
   color: #000;
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 20px;
 }

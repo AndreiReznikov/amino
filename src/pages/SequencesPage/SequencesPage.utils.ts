@@ -1,4 +1,8 @@
-export function createSequenceGradient(options: any): string {
+import { SequenceGradientOptions } from "./SequencesPage.types";
+
+export function createSequenceGradient(
+  options: SequenceGradientOptions
+): string {
   const {
     colorStep,
     gradientCount,
@@ -58,5 +62,4 @@ export function createSequenceGradient(options: any): string {
   }
 
   return backgroundValue;
-};
-
+}

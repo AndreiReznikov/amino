@@ -1,13 +1,17 @@
 import React from "react";
 import { Popover, Box, Typography, Paper, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { AMINO_ACID_NAMES, AMINO_GROUP_NAMES } from "./LegendPopover.constants";
-import styles from "./LegendPopover.module.css";
 import {
   AMINO_ACID_GROUP_COLORS,
   AMINO_ACID_GROUPS,
 } from "../../../pages/SequencesPage/SequencesPage.constants";
-import { AminoAcidGroup, AminoAcid } from "../../../pages/SequencesPage/SequencesPage.types";
+import {
+  AminoAcidGroup,
+  AminoAcid,
+} from "../../../pages/SequencesPage/SequencesPage.types";
+
+import { AMINO_ACID_NAMES, AMINO_GROUP_NAMES } from "./LegendPopover.constants";
+import styles from "./LegendPopover.module.css";
 
 interface LegendPopoverProps {
   open: boolean;
@@ -37,17 +41,12 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
     }}
   >
     <Box className={styles.container}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6" gutterBottom>
+      <Box className={styles.aminoGroupContainer}>
+        <Typography className={styles.title} gutterBottom>
           Группы аминокислот
         </Typography>
 
-        <IconButton
-          onClick={onClose}
-          size="small"
-          sx={{ marginLeft: 2 }}
-          aria-label="close"
-        >
+        <IconButton onClick={onClose} size="small" aria-label="close">
           <CloseIcon />
         </IconButton>
       </Box>
@@ -59,14 +58,14 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
               className={styles.colorSquare}
               style={{ backgroundColor: color }}
             />
-            <Typography variant="body1">
+            <Typography>
               {AMINO_GROUP_NAMES[group as AminoAcidGroup]}
             </Typography>
           </Box>
         ))}
       </Box>
 
-      <Typography variant="h6" gutterBottom>
+      <Typography className={styles.title} gutterBottom>
         Все аминокислоты
       </Typography>
 
@@ -77,12 +76,14 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
               className={styles.aminoAcidSymbol}
               style={{
                 backgroundColor:
-                  AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[aa.symbol as AminoAcid]],
+                  AMINO_ACID_GROUP_COLORS[
+                    AMINO_ACID_GROUPS[aa.symbol as AminoAcid]
+                  ],
               }}
             >
               {aa.symbol}
             </Paper>
-            <Typography variant="body1">{aa.name}</Typography>
+            <Typography>{aa.name}</Typography>
           </div>
         ))}
       </div>

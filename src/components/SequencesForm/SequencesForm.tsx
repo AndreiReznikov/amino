@@ -1,19 +1,18 @@
 import React, { useCallback } from "react";
-import { Button, SelectChangeEvent } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
+import { Button, SelectChangeEvent } from "@mui/material";
 import { ActionsPanel } from "../ActionsPanel";
 import { Legend } from "../Legend";
 import { SequenceInputFields } from "../SequenceInputFields";
-import { FIELDS_OPTIONS } from "../../pages/SequencesPage/SequencesPage.constants";
-import { SEQUENCE_FONT_OPTIONS } from "../ActionsPanel/ActionsPanel.constants";
+import {
+  FIELDS_OPTIONS,
+  SEQUENCE_FONT_OPTIONS,
+} from "../../pages/SequencesPage/SequencesPage.constants";
+import {
+  FormData,
+  SequenceSize,
+} from "../../pages/SequencesPage/SequencesPage.types";
 import styles from "./SequencesForm.module.css";
-
-type FormData = {
-  field1: string;
-  field2: string;
-};
-
-type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
 interface SequencesFormProps {
   onReset: () => void;

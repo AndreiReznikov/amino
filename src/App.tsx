@@ -1,4 +1,3 @@
-import React from "react";
 import { CssBaseline } from "@mui/material";
 import { SequencesPage } from "./pages/SequencesPage";
 import styles from "./app.module.css";

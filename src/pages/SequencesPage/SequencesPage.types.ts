@@ -1,3 +1,5 @@
+import { SEQUENCE_FONT_OPTIONS } from "./SequencesPage.constants";
+
 export type AminoAcid =
   | "A"
   | "R"
@@ -27,3 +29,21 @@ export type AminoAcidGroup =
   | "negativelyCharged"
   | "positivelyCharged"
   | "polarUncharged";
+
+export type FormData = {
+  field1: string;
+  field2: string;
+};
+
+export type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
+
+export interface SequenceGradientOptions {
+  colorStep: number;
+  gradientCount: number;
+  colorsPerGradient: number;
+  rowHeight: number;
+  colorSets?: string[];
+  initialY: number;
+  yStep: number;
+  defaultColor?: string;
+}

@@ -7,10 +7,9 @@ import {
   Switch,
   SelectChangeEvent,
 } from "@mui/material";
-import { SEQUENCE_FONT_OPTIONS } from "./ActionsPanel.constants";
+import { SEQUENCE_FONT_OPTIONS } from "../../pages/SequencesPage/SequencesPage.constants";
+import { SequenceSize } from "../../pages/SequencesPage/SequencesPage.types";
 import styles from "./ActionsPanel.module.css";
-
-type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
 
 interface ActionsPanelProps {
   onReset: () => void;

@@ -1,22 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import styles from "./SequencesPage.module.css";
+import { SelectChangeEvent } from "@mui/material";
 import { SequencesList } from "../../components/SequencesList";
 import { SequencesForm } from "../../components/SequencesForm";
+import { useCopyToClipboard } from "../../hooks";
 import {
   useSequenceInteraction,
   useSequencesBackground,
   useSequencesPosition,
 } from "./SequencesPage.hooks";
-import { SelectChangeEvent } from "@mui/material";
-import { SEQUENCE_FONT_OPTIONS } from "../../components/ActionsPanel/ActionsPanel.constants";
-import { useCopyToClipboard } from "../../hooks";
-
-type FormData = {
-  field1: string;
-  field2: string;
-};
-
-type SequenceSize = keyof typeof SEQUENCE_FONT_OPTIONS;
+import { FormData, SequenceSize } from "./SequencesPage.types";
+import { SEQUENCE_FONT_OPTIONS } from "./SequencesPage.constants";
+import styles from "./SequencesPage.module.css";
 
 export const SequencesPage: React.FC = () => {
   const [sequences, setSequences] = useState<string[]>([]);
