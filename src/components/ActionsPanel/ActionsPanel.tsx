@@ -17,6 +17,7 @@ interface ActionsPanelProps {
   onSelect: (event: SelectChangeEvent<SequenceSize>) => void;
   size: keyof typeof SEQUENCE_FONT_OPTIONS;
   checked: boolean;
+  valid: boolean;
 }
 
 export const ActionsPanel: React.FC<ActionsPanelProps> = ({
@@ -25,6 +26,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
   onSwitch,
   size,
   checked,
+  valid,
 }) => {
   const handleSwitchKeydown = useCallback(
     (event: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -37,7 +39,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
 
   return (
     <div className={styles.actionsPanelContainer}>
-      <Button onClick={onReset} type="reset" variant="outlined">
+      <Button className={styles.resetButton} onClick={onReset} type="reset" variant="outlined" disabled={!valid}>
         Очистить
       </Button>
       <Select

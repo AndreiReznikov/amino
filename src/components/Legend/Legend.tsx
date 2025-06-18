@@ -23,7 +23,7 @@ export const Legend: React.FC = memo(() => {
           onClick={handleLegendButtonClick}
           color="success"
         >
-          Легенда
+          Цвета
         </Button>
         <LegendPopover
           open={Boolean(anchorEl)}

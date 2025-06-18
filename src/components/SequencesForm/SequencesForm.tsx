@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { Button, SelectChangeEvent } from "@mui/material";
 import { ActionsPanel } from "../ActionsPanel";
@@ -38,7 +38,17 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
     reValidateMode: "onSubmit",
   });
 
-  const { handleSubmit, setError } = methods;
+  const { handleSubmit, setError, watch, reset } = methods;
+
+  const fieldValues = watch();
+
+  const isFormValid = useMemo(
+    () =>
+      FIELDS_OPTIONS.every(
+        (field) => fieldValues[field.name as keyof FormData]?.length > 0
+      ),
+    [fieldValues]
+  );
 
   const onFormSubmit = useCallback(
     (data: FormData) => {
@@ -59,24 +69,30 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
     [backgroundsRef, onSubmit, setError]
   );
 
+  const onFormReset = useCallback(() => {
+    reset();
+    onReset();
+  }, [reset, onReset]);
+
   return (
     <FormProvider {...methods}>
       <form className={styles.form} onSubmit={handleSubmit(onFormSubmit)}>
         <div className={styles.configurationPanelContainer}>
           <Legend />
           <ActionsPanel
-            onReset={onReset}
+            onReset={onFormReset}
             onSelect={onSelect}
             onSwitch={onSwitch}
             size={size}
             checked={checked}
+            valid={isFormValid}
           />
         </div>
         <div className={styles.inputsContainer}>
           <SequenceInputFields fields={FIELDS_OPTIONS} />
         </div>
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={!isFormValid}>
           Выравнивание
         </Button>
       </form>
