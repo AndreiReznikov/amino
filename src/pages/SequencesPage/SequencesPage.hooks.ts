@@ -127,7 +127,7 @@ export const useSequencesPosition = ({
     const sequencesCount = sequenceElementsRef?.current.length;
 
     sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
-      sequenceElement?.style.setProperty("top", `${index * fontSize}px`);
+      sequenceElement?.style.setProperty("top", `${index * fontSize - (sequencesCount * fontSize) / 2 + fontSize}px`);
       sequenceElement?.style.setProperty("font-size", `${fontSize}px`);
       sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
     });
