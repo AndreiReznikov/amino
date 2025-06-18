@@ -1,7 +1,7 @@
 .sequence {
   position: absolute;
   left: 0;
-  font-family: monospace;
+  font-family: "Roboto Mono", Courier, monospace;
   word-break: break-all;
   overflow-wrap: break-word;
 }

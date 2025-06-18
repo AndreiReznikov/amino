@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("./assets/fonts/roboto-mono.woff2") format("woff2"),
+    url("./assets/fonts/roboto-mono.woff") format("woff"),
+    url("assets/fonts/roboto-mono.ttf") format("truetype");
+  font-weight: 400;
+  font-display: fallback;
+}
+
 html,
 body {
   margin: 0;
