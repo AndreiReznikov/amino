@@ -4,8 +4,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { AMINO_ACID_NAMES, AMINO_GROUP_NAMES } from "./LegendPopover.constants";
 import styles from "./LegendPopover.module.css";
 import {
-  aminoAcidGroupColors,
-  aminoAcidGroups,
+  AMINO_ACID_GROUP_COLORS,
+  AMINO_ACID_GROUPS,
 } from "../../../pages/SequencesPage/SequencesPage.constants";
 import { AminoAcidGroup, AminoAcid } from "../../../pages/SequencesPage/SequencesPage.types";
 
@@ -53,7 +53,7 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
       </Box>
 
       <Box className={styles.groupsContainer}>
-        {Object.entries(aminoAcidGroupColors).map(([group, color]) => (
+        {Object.entries(AMINO_ACID_GROUP_COLORS).map(([group, color]) => (
           <Box key={group} className={styles.groupItem}>
             <Paper
               className={styles.colorSquare}
@@ -77,7 +77,7 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
               className={styles.aminoAcidSymbol}
               style={{
                 backgroundColor:
-                  aminoAcidGroupColors[aminoAcidGroups[aa.symbol as AminoAcid]],
+                  AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[aa.symbol as AminoAcid]],
               }}
             >
               {aa.symbol}

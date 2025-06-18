@@ -1,8 +1,9 @@
 import { AminoAcid, AminoAcidGroup } from "./SequencesPage.types";
 
 export const ALLOWED_CHARS_REGEX = /^[ARNDCEQGHILKMFPSTWYV\-]+$/i;
+export const DEFAULT_SEQUENCE_Z_INDEX = "10";
 
-export const aminoAcidGroups: Record<AminoAcid, AminoAcidGroup> = {
+export const AMINO_ACID_GROUPS: Record<AminoAcid, AminoAcidGroup> = {
   C: "cysteine", // Cysteine (special case)
   G: "glycine", // Glycine (special case)
 
@@ -33,7 +34,7 @@ export const aminoAcidGroups: Record<AminoAcid, AminoAcidGroup> = {
   H: "polarUncharged", // Histidine
 };
 
-export const aminoAcidGroupColors: Record<AminoAcidGroup, string> = {
+export const AMINO_ACID_GROUP_COLORS: Record<AminoAcidGroup, string> = {
   cysteine: "#FFEA00",
   glycine: "#C4C4C4",
   hydrophobic: "#67E4A6",

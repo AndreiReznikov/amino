@@ -3,6 +3,7 @@ import styles from "./SequencesPage.module.css";
 import { SequencesList } from "../../components/SequencesList";
 import { SequencesForm } from "../../components/SequencesForm";
 import {
+  useSequenceInteraction,
   useSequencesBackground,
   useSequencesPosition,
 } from "./SequencesPage.hooks";
@@ -27,6 +28,8 @@ export const SequencesPage: React.FC = () => {
 
   const fontSize = SEQUENCE_FONT_OPTIONS[sequenceSize].fontSize;
   const letterWidth = SEQUENCE_FONT_OPTIONS[sequenceSize].letterWidth;
+
+  useSequenceInteraction(sequenceElementsRef.current);
 
   const {
     sequencesBackgroundsRef,
