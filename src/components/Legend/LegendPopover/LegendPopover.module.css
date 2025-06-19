@@ -11,77 +11,40 @@
   font-size: 28px !important;
 }
 
-.groupsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
 .aminoGroupContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.groupsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
 .groupItem {
   display: flex;
   align-items: center;
   width: 100%;
-}
 
-@media (min-width: 600px) {
-  .groupItem {
+  @media (min-width: 600px) {
     width: calc(50% - 16px);
   }
-}
 
-@media (min-width: 900px) {
-  .groupItem {
+  @media (min-width: 900px) {
     width: calc(33.333% - 16px);
   }
 }
 
-.colorSquare {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  border-radius: 4px;
-}
-
-.aminoAcidsContainer {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(1, 1fr);
-}
-
-@media (min-width: 600px) {
-  .aminoAcidsContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 900px) {
-  .aminoAcidsContainer {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .aminoAcidsContainer {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.aminoAcidItem {
-  display: flex;
-  align-items: center;
-}
-
-.aminoAcidSymbol {
+.aminoGroupSymbol {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
   margin-right: 8px;
@@ -89,4 +52,34 @@
   color: #000;
   font-weight: bold;
   font-size: 20px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+.aminoAcidsContainer {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(1, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.aminoAcidItem {
+  display: flex;
+  align-items: center;
 }

@@ -3,6 +3,7 @@ import { Popover, Box, Typography, Paper, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   AMINO_ACID_GROUP_COLORS,
+  AMINO_ACID_GROUP_SYMBOLS,
   AMINO_ACID_GROUPS,
 } from "../../../pages/SequencesPage/SequencesPage.constants";
 import {
@@ -10,7 +11,7 @@ import {
   AminoAcid,
 } from "../../../pages/SequencesPage/SequencesPage.types";
 
-import { AMINO_ACID_NAMES, AMINO_GROUP_NAMES } from "./LegendPopover.constants";
+import { AMINO_ACIDS, AMINO_GROUPS } from "./LegendPopover.constants";
 import styles from "./LegendPopover.module.css";
 
 interface LegendPopoverProps {
@@ -41,52 +42,64 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
     }}
   >
     <Box className={styles.container}>
-      <Box className={styles.aminoGroupContainer}>
-        <Typography className={styles.title} gutterBottom>
-          Группы аминокислот
+      <section aria-labelledby="amino-groups-title">
+        <Box className={styles.aminoGroupContainer}>
+          <Typography
+            id="amino-groups-title"
+            className={styles.title}
+            gutterBottom
+          >
+            Группы аминокислот
+          </Typography>
+
+          <IconButton onClick={onClose} size="small" aria-label="Закрыть">
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <ul className={styles.groupsContainer}>
+          {Object.entries(AMINO_ACID_GROUP_COLORS).map(([group, color]) => (
+            <li key={group} className={styles.groupItem}>
+              <Paper
+                className={styles.aminoGroupSymbol}
+                style={{ backgroundColor: color }}
+              >
+                {AMINO_ACID_GROUP_SYMBOLS[group]}
+              </Paper>
+              <Typography>{AMINO_GROUPS[group as AminoAcidGroup]}</Typography>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={styles.section} aria-labelledby="amino-list-title">
+        <Typography id="amino-list-title" className={styles.title} gutterBottom>
+          Все аминокислоты
         </Typography>
 
-        <IconButton onClick={onClose} size="small" aria-label="Закрыть">
-          <CloseIcon />
-        </IconButton>
-      </Box>
-
-      <Box className={styles.groupsContainer}>
-        {Object.entries(AMINO_ACID_GROUP_COLORS).map(([group, color]) => (
-          <Box key={group} className={styles.groupItem}>
-            <Paper
-              className={styles.colorSquare}
-              style={{ backgroundColor: color }}
-            />
-            <Typography>
-              {AMINO_GROUP_NAMES[group as AminoAcidGroup]}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-
-      <Typography className={styles.title} gutterBottom>
-        Все аминокислоты
-      </Typography>
-
-      <div className={styles.aminoAcidsContainer}>
-        {AMINO_ACID_NAMES.map((aa) => (
-          <div key={aa.symbol} className={styles.aminoAcidItem}>
-            <Paper
-              className={styles.aminoAcidSymbol}
-              style={{
-                backgroundColor:
-                  AMINO_ACID_GROUP_COLORS[
+        <ul className={styles.aminoAcidsContainer}>
+          {AMINO_ACIDS.map((aa) => (
+            <li key={aa.symbol} className={styles.aminoAcidItem}>
+              <Paper
+                className={styles.aminoGroupSymbol}
+                style={{
+                  backgroundColor:
+                    AMINO_ACID_GROUP_COLORS[
+                      AMINO_ACID_GROUPS[aa.symbol as AminoAcid]
+                    ],
+                }}
+              >
+                {
+                  AMINO_ACID_GROUP_SYMBOLS[
                     AMINO_ACID_GROUPS[aa.symbol as AminoAcid]
-                  ],
-              }}
-            >
-              {aa.symbol}
-            </Paper>
-            <Typography>{aa.name}</Typography>
-          </div>
-        ))}
-      </div>
+                  ]
+                }
+              </Paper>
+              <Typography>{aa.name}</Typography>
+            </li>
+          ))}
+        </ul>
+      </section>
     </Box>
   </Popover>
 );

@@ -51,6 +51,15 @@ export const AMINO_ACID_GROUP_COLORS: Record<AminoAcidGroup, string> = {
   polarUncharged: "#80BFFF",
 };
 
+export const AMINO_ACID_GROUP_SYMBOLS: Record<string, string> = {
+  cysteine: "C",
+  glycine: "G",
+  hydrophobic: "!",
+  negativelyCharged: "-",
+  positivelyCharged: "+",
+  polarUncharged: "0",
+};
+
 export const FIELDS_OPTIONS = [
   {
     name: "field1",

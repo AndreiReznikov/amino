@@ -1,6 +1,6 @@
 import { AminoAcidGroup } from "../../../pages/SequencesPage/SequencesPage.types";
 
-export const AMINO_GROUP_NAMES: Record<AminoAcidGroup, string> = {
+export const AMINO_GROUPS: Record<AminoAcidGroup, string> = {
   cysteine: "Цистеин",
   glycine: "Глицин",
   hydrophobic: "Гидрофобные",
@@ -9,25 +9,25 @@ export const AMINO_GROUP_NAMES: Record<AminoAcidGroup, string> = {
   polarUncharged: "Полярные незаряженные",
 };
 
-export const AMINO_ACID_NAMES = [
-  { symbol: "A", name: "Аланин" },
-  { symbol: "R", name: "Аргинин" },
-  { symbol: "N", name: "Аспарагин" },
-  { symbol: "D", name: "Аспарагиновая кислота" },
-  { symbol: "V", name: "Валин" },
-  { symbol: "H", name: "Гистидин" },
-  { symbol: "G", name: "Глицин" },
-  { symbol: "E", name: "Глутаминовая кислота" },
-  { symbol: "Q", name: "Глутамин" },
-  { symbol: "I", name: "Изолейцин" },
-  { symbol: "L", name: "Лейцин" },
-  { symbol: "K", name: "Лизин" },
-  { symbol: "M", name: "Метионин" },
-  { symbol: "P", name: "Пролин" },
-  { symbol: "S", name: "Серин" },
-  { symbol: "Y", name: "Тирозин" },
-  { symbol: "T", name: "Треонин" },
-  { symbol: "W", name: "Триптофан" },
-  { symbol: "F", name: "Фенилаланин" },
-  { symbol: "C", name: "Цистеин" },
+export const AMINO_ACIDS = [
+  { symbol: "A", name: "Аланин (A)" },
+  { symbol: "R", name: "Аргинин (R)" },
+  { symbol: "N", name: "Аспарагин (N)" },
+  { symbol: "D", name: "Аспарагиновая кислота (D)" },
+  { symbol: "V", name: "Валин (V)" },
+  { symbol: "H", name: "Гистидин (H)" },
+  { symbol: "G", name: "Глицин(G)" },
+  { symbol: "E", name: "Глутаминовая кислота(E)" },
+  { symbol: "Q", name: "Глутамин (Q)" },
+  { symbol: "I", name: "Изолейцин (I)" },
+  { symbol: "L", name: "Лейцин (L)" },
+  { symbol: "K", name: "Лизин (K)" },
+  { symbol: "M", name: "Метионин (M)" },
+  { symbol: "P", name: "Пролин (P)" },
+  { symbol: "S", name: "Серин (S)" },
+  { symbol: "Y", name: "Тирозин (Y)" },
+  { symbol: "T", name: "Треонин (T)" },
+  { symbol: "W", name: "Триптофан (W)" },
+  { symbol: "F", name: "Фенилаланин (F)" },
+  { symbol: "C", name: "Цистеин (C)" },
 ];

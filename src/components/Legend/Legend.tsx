@@ -1,4 +1,5 @@
 import React, { useRef, useCallback, useState, memo } from "react";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Button } from "@mui/material";
 import { LegendPopover } from "./LegendPopover";
 
@@ -22,8 +23,9 @@ export const Legend: React.FC = memo(() => {
           variant="outlined"
           onClick={handleLegendButtonClick}
           color="success"
+          aria-label="Обозначения"
         >
-          Цвета
+          <InfoOutlinedIcon />
         </Button>
         <LegendPopover
           open={Boolean(anchorEl)}
