@@ -3,13 +3,12 @@ import styles from "./Sequence.module.css";
 
 interface SequenceProps {
   sequence: string;
-  index: number;
   isLastSequence?: boolean;
   onLastRender?: () => void;
 }
 
-export const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
-  ({ sequence, index, isLastSequence, onLastRender }, ref) => {
+export const Sequence: React.FC<SequenceProps> = (
+  ({ sequence, isLastSequence, onLastRender }) => {
     useEffect(() => {
       if (!isLastSequence) return;
 
@@ -18,10 +17,7 @@ export const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
 
     return (
       <div
-        ref={ref}
-        className={`${styles.sequence} ${
-          index === 0 ? styles.referenceSequence : ""
-        }`}
+        className={styles.sequence}
         tabIndex={0}
         data-copy-on-enter
       >

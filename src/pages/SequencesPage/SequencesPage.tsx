@@ -121,7 +121,11 @@ export const SequencesPage: React.FC = () => {
         checked={isBackgroundShown}
         backgroundsRef={sequencesBackgroundsRef}
       />
-      <div ref={sequencesContainerRef} className={styles.sequencesContainer}>
+      <main
+        ref={sequencesContainerRef}
+        className={styles.sequencesContainer}
+        aria-live="polite"
+      >
         <div className={styles.sequencesWrapper}>
           <SequencesList
             sequences={sequences}
@@ -129,7 +133,7 @@ export const SequencesPage: React.FC = () => {
             onLastRender={onLastSequenceRender}
           />
         </div>
-      </div>
+      </main>
       <Notification />
     </div>
   );

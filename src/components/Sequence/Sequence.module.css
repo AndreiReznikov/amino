@@ -1,11 +1,5 @@
 .sequence {
-  position: absolute;
-  left: 0;
   font-family: "Roboto Mono", Courier, monospace;
   word-break: break-all;
   overflow-wrap: break-word;
-}
-
-.referenceSequence {
-  position: relative;
 }

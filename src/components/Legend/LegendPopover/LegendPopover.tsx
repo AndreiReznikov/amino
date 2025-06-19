@@ -46,7 +46,7 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
           Группы аминокислот
         </Typography>
 
-        <IconButton onClick={onClose} size="small" aria-label="close">
+        <IconButton onClick={onClose} size="small" aria-label="Закрыть">
           <CloseIcon />
         </IconButton>
       </Box>
