@@ -42,7 +42,7 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
 
   const fieldValues = watch();
 
-  const isFormValid = useMemo(
+  const isFormFilled = useMemo(
     () =>
       FIELDS_OPTIONS.every(
         (field) => fieldValues[field.name as keyof FormData]?.length > 0
@@ -85,14 +85,14 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
             onSwitch={onSwitch}
             size={size}
             checked={checked}
-            valid={isFormValid}
+            formFilled={isFormFilled}
           />
         </div>
         <div className={styles.inputsContainer}>
           <SequenceInputFields fields={FIELDS_OPTIONS} />
         </div>
 
-        <Button type="submit" variant="contained" disabled={!isFormValid}>
+        <Button type="submit" variant="contained" disabled={!isFormFilled}>
           Выравнивание
         </Button>
       </form>
