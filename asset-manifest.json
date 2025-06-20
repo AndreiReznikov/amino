@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/amino/static/css/main.d6abfac4.css",
-    "main.js": "/amino/static/js/main.9a2e2959.js",
+    "main.js": "/amino/static/js/main.dc1e2f60.js",
     "static/media/roboto-mono.ttf": "/amino/static/media/roboto-mono.1a09735af08026dfb45d.ttf",
     "static/media/roboto-mono.woff2": "/amino/static/media/roboto-mono.aa6e917c96e597f137b2.woff2",
     "static/media/roboto-mono.woff": "/amino/static/media/roboto-mono.fdb590d52a557dd48e48.woff",
     "index.html": "/amino/index.html",
     "main.d6abfac4.css.map": "/amino/static/css/main.d6abfac4.css.map",
-    "main.9a2e2959.js.map": "/amino/static/js/main.9a2e2959.js.map"
+    "main.dc1e2f60.js.map": "/amino/static/js/main.dc1e2f60.js.map"
   },
   "entrypoints": [
     "static/css/main.d6abfac4.css",
-    "static/js/main.9a2e2959.js"
+    "static/js/main.dc1e2f60.js"
   ]
 }
