@@ -42,8 +42,8 @@ export interface SequenceGradientOptions {
   gradientCount: number;
   colorsPerGradient: number;
   rowHeight: number;
-  colorSets?: string[];
   initialY: number;
   yStep: number;
+  colorSets?: string[];
   defaultColor?: string;
 }

@@ -45,8 +45,10 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
       <section aria-labelledby="amino-groups-title">
         <Box className={styles.aminoGroupContainer}>
           <Typography
-            id="amino-groups-title"
+            variant="h6"
+            component="h2"
             className={styles.title}
+            id="amino-groups-title"
             gutterBottom
           >
             Группы аминокислот
@@ -73,7 +75,13 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
       </section>
 
       <section className={styles.section} aria-labelledby="amino-list-title">
-        <Typography id="amino-list-title" className={styles.title} gutterBottom>
+        <Typography
+          variant="h6"
+          component="h2"
+          className={styles.title}
+          id="amino-list-title"
+          gutterBottom
+        >
           Все аминокислоты
         </Typography>
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { Button, SelectChangeEvent } from "@mui/material";
+import { Button, SelectChangeEvent, Typography } from "@mui/material";
 import { ActionsPanel } from "../ActionsPanel";
 import { Legend } from "../Legend";
 import { SequenceInputFields } from "../SequenceInputFields";
@@ -88,6 +88,9 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
             formFilled={isFormFilled}
           />
         </div>
+        <Typography variant="h6" component="h1">
+          Попарное выравнивание
+        </Typography>
         <div className={styles.inputsContainer}>
           <SequenceInputFields fields={FIELDS_OPTIONS} />
         </div>

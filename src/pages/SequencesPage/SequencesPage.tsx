@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { SelectChangeEvent } from "@mui/material";
+import { Button, SelectChangeEvent } from "@mui/material";
 import { SequencesList } from "../../components/SequencesList";
 import { SequencesForm } from "../../components/SequencesForm";
 import { useCopyToClipboard } from "../../hooks";
@@ -14,6 +14,7 @@ import {
   TEXT_COPY_DATA_ATTRIBUTE,
 } from "./SequencesPage.constants";
 import styles from "./SequencesPage.module.css";
+import { DifferencesModal } from "../../components/DifferencesModal";
 
 export const SequencesPage: React.FC = () => {
   const [sequences, setSequences] = useState<string[]>([]);
@@ -21,6 +22,7 @@ export const SequencesPage: React.FC = () => {
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
   const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
+  const [resultModalOpened, setResultModalOpened] = useState(false);
 
   const sequencesContainerRef = useRef<HTMLDivElement | null>(null);
   const sequenceElementsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -48,8 +50,6 @@ export const SequencesPage: React.FC = () => {
     letterWidth,
     sequenceElementsRef,
   });
-
-  // console.log(sequencesDifferencesRef);
 
   const { setSequencesPosition } = useSequencesPosition({
     fontSize,
@@ -129,13 +129,30 @@ export const SequencesPage: React.FC = () => {
         className={styles.sequencesContainer}
         aria-live="polite"
       >
-        <div className={styles.sequencesWrapper}>
+        {sequences.length !== 0 && (
+          <section>
+            <Button
+              variant="text"
+              onClick={() => setResultModalOpened(true)}
+              sx={{ marginTop: 2 }}
+            >
+              Результат
+            </Button>
+
+            <DifferencesModal
+              open={resultModalOpened}
+              onClose={() => setResultModalOpened(false)}
+              differences={sequencesDifferencesRef.current}
+            />
+          </section>
+        )}
+        <section className={styles.sequencesWrapper}>
           <SequencesList
             sequences={sequences}
             sequenceElements={sequenceElementsRef?.current}
             onLastRender={onLastSequenceRender}
           />
-        </div>
+        </section>
       </main>
       <Notification />
     </div>
