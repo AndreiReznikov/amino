@@ -3,10 +3,13 @@ import {
   AMINO_ACID_GROUP_COLORS,
   AMINO_ACID_GROUPS,
 } from "./SequencesPage.constants";
-import { AminoAcid } from "./SequencesPage.types";
-import { createSequenceGradient, getSequenceColors } from "./SequencesPage.utils";
+import { AminoAcid, AminoAcidDifference } from "./SequencesPage.types";
+import {
+  createSequenceGradient,
+  getSequenceColors,
+} from "./SequencesPage.utils";
 
-export const useSequencesBackground = ({
+export const useSequencesDifferences = ({
   sequences,
   isBackgroundShown,
   isAllSequencesMounted,
@@ -22,7 +25,7 @@ export const useSequencesBackground = ({
   sequenceElementsRef: React.RefObject<(HTMLDivElement | null)[]>;
 }) => {
   const sequencesBackgroundsRef = useRef<string[] | null>(null);
-  const sequencesDifferencesRef = useRef<Record<number, string[]>>({});
+  const sequencesDifferencesRef = useRef<Record<number, AminoAcidDifference>>({});
 
   const getSequencesBackgrounds = useCallback(() => {
     if (!isAllSequencesMounted) return null;
@@ -51,13 +54,15 @@ export const useSequencesBackground = ({
       const rowLettersNumber = Math.floor(sequenceLettersRatio);
       const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
 
-      const sequenceColors = getSequenceColors(
+      const sequenceColors = getSequenceColors({
         index,
         sequence,
         referenceSequenceAminoChain,
         referenceSequenceColors,
-        sequencesDifferencesRef
-      );
+        sequencesDifferencesRef,
+        groupColors: AMINO_ACID_GROUP_COLORS,
+        groups: AMINO_ACID_GROUPS,
+      });
 
       return createSequenceGradient({
         colorStep: letterWidth,

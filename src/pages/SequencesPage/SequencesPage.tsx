@@ -5,7 +5,7 @@ import { SequencesForm } from "../../components/SequencesForm";
 import { useCopyToClipboard } from "../../hooks";
 import {
   useSequenceInteraction,
-  useSequencesBackground,
+  useSequencesDifferences,
   useSequencesPosition,
 } from "./SequencesPage.hooks";
 import { FormData, SequenceSize } from "./SequencesPage.types";
@@ -42,7 +42,7 @@ export const SequencesPage: React.FC = () => {
     sequencesDifferencesRef,
     setSequencesBackground,
     updateSequencesBackground,
-  } = useSequencesBackground({
+  } = useSequencesDifferences({
     sequences,
     isBackgroundShown,
     isAllSequencesMounted,

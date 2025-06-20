@@ -1,8 +1,10 @@
 import {
-  AMINO_ACID_GROUP_COLORS,
-  AMINO_ACID_GROUPS,
-} from "./SequencesPage.constants";
-import { AminoAcid, SequenceGradientOptions } from "./SequencesPage.types";
+  AminoAcid,
+  AminoAcidDifference,
+  AminoAcidGroup,
+  DifferenceType,
+  SequenceGradientOptions,
+} from "./SequencesPage.types";
 
 export const createSequenceGradient = (
   options: SequenceGradientOptions
@@ -17,7 +19,6 @@ export const createSequenceGradient = (
     yStep,
     defaultColor = "transparent",
   } = options;
-
   const requiredColorsCount = gradientCount * colorsPerGradient;
 
   const paddedColorSets = [...colorSets];
@@ -68,58 +69,99 @@ export const createSequenceGradient = (
   return backgroundValue;
 };
 
-export const getSequenceColors = (
-  index: number,
-  sequence: AminoAcid[],
-  referenceSequenceAminoChain: AminoAcid[],
-  referenceSequenceColors: string[],
-  sequencesDifferencesRef: React.RefObject<Record<number, string[]>>
-) => {
+export const getSequenceColors = ({
+  index,
+  sequence,
+  referenceSequenceAminoChain,
+  referenceSequenceColors,
+  sequencesDifferencesRef,
+  groupColors,
+  groups,
+}: {
+  index: number;
+  sequence: AminoAcid[];
+  referenceSequenceAminoChain: AminoAcid[];
+  referenceSequenceColors: string[];
+  sequencesDifferencesRef: React.RefObject<Record<number, AminoAcidDifference>>;
+  groupColors: Record<AminoAcidGroup, string>;
+  groups: Record<AminoAcid, AminoAcidGroup>;
+}) => {
   if (index === 0) {
     return referenceSequenceColors;
   }
 
   return sequence?.map((amino, i) =>
-    getAminoColor(
+    getAminoColor({
       amino,
-      i,
+      index: i,
       referenceSequenceAminoChain,
-      sequencesDifferencesRef
-    )
+      sequencesDifferencesRef,
+      groupColors,
+      groups,
+    })
   );
 };
 
-function getAminoColor(
-  amino: AminoAcid,
-  index: number,
-  referenceSequenceAminoChain: AminoAcid[],
-  sequencesDifferencesRef: React.RefObject<Record<number, string[]>>
-) {
+const getAminoColor = ({
+  index,
+  amino,
+  referenceSequenceAminoChain,
+  sequencesDifferencesRef,
+  groupColors,
+  groups,
+}: {
+  index: number;
+  amino: AminoAcid;
+  referenceSequenceAminoChain: AminoAcid[];
+  sequencesDifferencesRef: React.RefObject<Record<number, AminoAcidDifference>>;
+  groupColors: Record<AminoAcidGroup, string>;
+  groups: Record<AminoAcid, AminoAcidGroup>;
+}) => {
+  updateDifferencesRef(
+    amino,
+    referenceSequenceAminoChain[index],
+    index,
+    sequencesDifferencesRef
+  );
+
   if (amino === referenceSequenceAminoChain[index]) {
     return "transparent";
   }
 
-  updateDifferencesRef(
-    amino,
-    index,
-    referenceSequenceAminoChain,
-    sequencesDifferencesRef
-  );
+  return groupColors[groups[amino]] ?? "transparent";
+};
 
-  return AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[amino]];
-}
+const getDifferencesType = (
+  refAmino: AminoAcid | "-",
+  amino: AminoAcid | "-"
+): string => {
+  switch (true) {
+    case amino === refAmino:
+      return DifferenceType.MATCH;
+    case refAmino === "-":
+      return `${DifferenceType.INSERTION} ${refAmino} → ${amino}`;
+    case amino === "-":
+      return `${DifferenceType.DELETION} ${amino} → ${refAmino}`;
+    default:
+      return `${DifferenceType.SUBSTITUTION} ${refAmino} → ${amino}`;
+  }
+};
 
-function updateDifferencesRef(
+const updateDifferencesRef = (
   amino: AminoAcid,
+  refAmino: AminoAcid,
   index: number,
-  referenceSequenceAminoChain: AminoAcid[],
-  sequencesDifferencesRef: React.RefObject<Record<number, string[]>>
-) {
+  sequencesDifferencesRef: React.RefObject<Record<number, AminoAcidDifference>>
+) => {
   if (!sequencesDifferencesRef.current[index]) {
-    sequencesDifferencesRef.current[index] = [
-      referenceSequenceAminoChain[index],
-    ];
+    sequencesDifferencesRef.current[index] = {
+      refAmino,
+    };
   }
 
-  sequencesDifferencesRef.current?.[index].push(amino);
-}
+  sequencesDifferencesRef.current[index].targetAmino = amino;
+  sequencesDifferencesRef.current[index].diffType = getDifferencesType(
+    refAmino,
+    amino
+  );
+};

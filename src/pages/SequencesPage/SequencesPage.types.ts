@@ -47,3 +47,16 @@ export interface SequenceGradientOptions {
   colorSets?: string[];
   defaultColor?: string;
 }
+
+export interface AminoAcidDifference {
+  refAmino?: string;
+  targetAmino?: string;
+  diffType?: string;
+}
+
+export enum DifferenceType {
+  MATCH = "Совпадение",
+  INSERTION = "Вставка",
+  DELETION = "Делеция",
+  SUBSTITUTION = "Замена",
+}
