@@ -1,3 +1,4 @@
+import { DEFAULT_COLOR } from "./SequencesPage.constants";
 import {
   AminoAcid,
   AminoAcidDifference,
@@ -17,7 +18,7 @@ export const createSequenceGradient = (
     colorSets = [],
     initialY,
     yStep,
-    defaultColor = "transparent",
+    defaultColor = DEFAULT_COLOR,
   } = options;
   const requiredColorsCount = gradientCount * colorsPerGradient;
 
@@ -47,9 +48,9 @@ export const createSequenceGradient = (
       if (
         i === 1 &&
         j === colorsPerGradient - 1 &&
-        currentColors[j] === "transparent"
+        currentColors[j] === DEFAULT_COLOR
       ) {
-        gradientParts.push(`transparent ${start}px`);
+        gradientParts.push(`${DEFAULT_COLOR} ${start}px`);
       } else {
         gradientParts.push(`${currentColors[j]} ${start}px ${end}px`);
       }
@@ -125,10 +126,10 @@ const getAminoColor = ({
   );
 
   if (amino === referenceSequenceAminoChain[index]) {
-    return "transparent";
+    return DEFAULT_COLOR;
   }
 
-  return groupColors[groups[amino]] ?? "transparent";
+  return groupColors[groups[amino]] ?? DEFAULT_COLOR;
 };
 
 const getDifferencesType = (

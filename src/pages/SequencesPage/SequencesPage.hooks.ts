@@ -2,6 +2,8 @@ import { useCallback, useRef } from "react";
 import {
   AMINO_ACID_GROUP_COLORS,
   AMINO_ACID_GROUPS,
+  DEFAULT_COLOR,
+  DEFAULT_SEQUENCE_Z_INDEX,
 } from "./SequencesPage.constants";
 import { AminoAcid, AminoAcidDifference } from "./SequencesPage.types";
 import {
@@ -25,19 +27,23 @@ export const useSequencesDifferences = ({
   sequenceElementsRef: React.RefObject<(HTMLDivElement | null)[]>;
 }) => {
   const sequencesBackgroundsRef = useRef<string[] | null>(null);
-  const sequencesDifferencesRef = useRef<Record<number, AminoAcidDifference>>({});
+  const sequencesDifferencesRef = useRef<Record<number, AminoAcidDifference>>(
+    {}
+  );
 
   const getSequencesBackgrounds = useCallback(() => {
     if (!isAllSequencesMounted) return null;
 
-    sequencesDifferencesRef.current = {};
+    Object.keys(sequencesDifferencesRef.current).forEach(
+      (key) => delete sequencesDifferencesRef.current[Number(key)]
+    );
 
     const sequencesCount = sequenceElementsRef.current?.length;
     const lineHeight = fontSize * sequencesCount;
     const referenceSequenceAminoChain = sequences[0]?.split("") as AminoAcid[];
     const referenceSequenceColors = referenceSequenceAminoChain?.map(
       (amino) =>
-        AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[amino]] ?? "transparent"
+        AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[amino]] ?? DEFAULT_COLOR
     );
 
     return sequenceElementsRef?.current?.map((sequenceElement, index) => {
@@ -87,7 +93,7 @@ export const useSequencesDifferences = ({
       if (!sequenceElement) return;
 
       sequenceElement.style.background = !isBackgroundShown
-        ? "transparent"
+        ? DEFAULT_COLOR
         : sequencesBackgroundsRef.current?.[index] ?? "";
     });
   }, [isBackgroundShown, sequenceElementsRef]);
@@ -163,7 +169,7 @@ export const useSequenceInteraction = (
 
   const activateElement = (element: HTMLElement) => {
     resetZIndices();
-    element.style.zIndex = "10";
+    element.style.zIndex = DEFAULT_SEQUENCE_Z_INDEX;
     activeElement = element;
   };
 

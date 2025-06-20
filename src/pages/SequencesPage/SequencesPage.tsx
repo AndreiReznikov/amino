@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button, SelectChangeEvent } from "@mui/material";
-import { SequencesList } from "../../components/SequencesList";
 import { SequencesForm } from "../../components/SequencesForm";
+import { DifferencesModal } from "../../components/DifferencesModal";
+import { SequencesList } from "../../components/SequencesList";
 import { useCopyToClipboard } from "../../hooks";
 import {
   useSequenceInteraction,
@@ -14,7 +15,6 @@ import {
   TEXT_COPY_DATA_ATTRIBUTE,
 } from "./SequencesPage.constants";
 import styles from "./SequencesPage.module.css";
-import { DifferencesModal } from "../../components/DifferencesModal";
 
 export const SequencesPage: React.FC = () => {
   const [sequences, setSequences] = useState<string[]>([]);
@@ -85,6 +85,9 @@ export const SequencesPage: React.FC = () => {
     setIsAllSequencesMounted(true);
   }, []);
 
+  const handleOpenResultModal = useCallback(() => setResultModalOpened(true), []);
+  const handleCloseResultModal = useCallback(() => setResultModalOpened(false), []);
+
   useEffect(() => {
     if (!isAllSequencesMounted) return;
 
@@ -133,15 +136,14 @@ export const SequencesPage: React.FC = () => {
           <section>
             <Button
               variant="text"
-              onClick={() => setResultModalOpened(true)}
-              sx={{ marginTop: 2 }}
+              onClick={handleOpenResultModal}
             >
               Результат
             </Button>
 
             <DifferencesModal
               open={resultModalOpened}
-              onClose={() => setResultModalOpened(false)}
+              onClose={handleCloseResultModal}
               differences={sequencesDifferencesRef.current}
             />
           </section>

@@ -1,0 +1,15 @@
+.tableContainer {
+  margin-top: 20px;
+  max-height: 60vh;
+  overflow: auto;
+  border-bottom: 1px solid lightgray;
+}
+
+.headCell {
+  font-weight: bold;
+  border-bottom: 2px solid lightgray;
+}
+
+.bodyCell {
+  border-bottom: 1px solid lightgray;
+}
