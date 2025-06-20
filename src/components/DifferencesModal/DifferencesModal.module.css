@@ -2,14 +2,14 @@
   margin-top: 20px;
   max-height: 60vh;
   overflow: auto;
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .headCell {
   font-weight: bold;
-  border-bottom: 2px solid lightgray;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .bodyCell {
-  border-bottom: 1px solid lightgray;
+  border-bottom: 1px solid var(--border-color);
 }

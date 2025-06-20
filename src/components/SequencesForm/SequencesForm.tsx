@@ -88,7 +88,7 @@ export const SequencesForm: React.FC<SequencesFormProps> = ({
             formFilled={isFormFilled}
           />
         </div>
-        <Typography textAlign="center" variant="h6" component="h1">
+        <Typography className={styles.title} textAlign="center" variant="h6" component="h1">
           Попарное выравнивание
         </Typography>
         <div className={styles.inputsContainer}>

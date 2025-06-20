@@ -7,9 +7,20 @@
 }
 
 .configurationPanelContainer {
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: space-between;
   width: 100%;
+  min-height: var(--panel-height);
+  padding: 10px 20px;
+  background: var(--background);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 11;
+}
+
+.title {
+  margin-top: var(--panel-height) !important;
 }
 
 .inputsContainer {
