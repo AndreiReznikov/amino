@@ -3,3 +3,12 @@
   word-break: break-all;
   overflow-wrap: break-word;
 }
+
+.sequence {
+  position: absolute;
+  left: 0;
+}
+
+.referenceSequence {
+  position: relative;
+}

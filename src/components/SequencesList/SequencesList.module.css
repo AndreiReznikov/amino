@@ -5,12 +5,3 @@
   padding: 0;
   list-style-type: none;
 }
-
-.sequence {
-  position: absolute;
-  left: 0;
-}
-
-.referenceSequence {
-  position: relative;
-}
