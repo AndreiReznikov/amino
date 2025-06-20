@@ -21,7 +21,7 @@ export const SequencesPage: React.FC = () => {
   const [isBackgroundShown, setIsBackgroundShown] = useState<boolean>(true);
   const [isAllSequencesMounted, setIsAllSequencesMounted] =
     useState<boolean>(false);
-  const [sequenceSize, setSequenceSize] = useState<SequenceSize>("small");
+  const [sequenceSize, setSequenceSize] = useState<SequenceSize>("medium");
   const [resultModalOpened, setResultModalOpened] = useState(false);
 
   const sequencesContainerRef = useRef<HTMLDivElement | null>(null);
