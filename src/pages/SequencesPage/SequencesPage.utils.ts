@@ -1,8 +1,12 @@
-import { SequenceGradientOptions } from "./SequencesPage.types";
+import {
+  AMINO_ACID_GROUP_COLORS,
+  AMINO_ACID_GROUPS,
+} from "./SequencesPage.constants";
+import { AminoAcid, SequenceGradientOptions } from "./SequencesPage.types";
 
-export function createSequenceGradient(
+export const createSequenceGradient = (
   options: SequenceGradientOptions
-): string {
+): string => {
   const {
     colorStep,
     gradientCount,
@@ -62,4 +66,60 @@ export function createSequenceGradient(
   }
 
   return backgroundValue;
+};
+
+export const getSequenceColors = (
+  index: number,
+  sequence: AminoAcid[],
+  referenceSequenceAminoChain: AminoAcid[],
+  referenceSequenceColors: string[],
+  sequencesDifferencesRef: React.RefObject<Record<number, string[]>>
+) => {
+  if (index === 0) {
+    return referenceSequenceColors;
+  }
+
+  return sequence?.map((amino, i) =>
+    getAminoColor(
+      amino,
+      i,
+      referenceSequenceAminoChain,
+      sequencesDifferencesRef
+    )
+  );
+};
+
+function getAminoColor(
+  amino: AminoAcid,
+  index: number,
+  referenceSequenceAminoChain: AminoAcid[],
+  sequencesDifferencesRef: React.RefObject<Record<number, string[]>>
+) {
+  if (amino === referenceSequenceAminoChain[index]) {
+    return "transparent";
+  }
+
+  updateDifferencesRef(
+    amino,
+    index,
+    referenceSequenceAminoChain,
+    sequencesDifferencesRef
+  );
+
+  return AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[amino]];
+}
+
+function updateDifferencesRef(
+  amino: AminoAcid,
+  index: number,
+  referenceSequenceAminoChain: AminoAcid[],
+  sequencesDifferencesRef: React.RefObject<Record<number, string[]>>
+) {
+  if (!sequencesDifferencesRef.current[index]) {
+    sequencesDifferencesRef.current[index] = [
+      referenceSequenceAminoChain[index],
+    ];
+  }
+
+  sequencesDifferencesRef.current?.[index].push(amino);
 }

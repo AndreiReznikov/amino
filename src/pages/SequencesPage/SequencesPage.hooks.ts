@@ -4,7 +4,7 @@ import {
   AMINO_ACID_GROUPS,
 } from "./SequencesPage.constants";
 import { AminoAcid } from "./SequencesPage.types";
-import { createSequenceGradient } from "./SequencesPage.utils";
+import { createSequenceGradient, getSequenceColors } from "./SequencesPage.utils";
 
 export const useSequencesBackground = ({
   sequences,
@@ -22,9 +22,12 @@ export const useSequencesBackground = ({
   sequenceElementsRef: React.RefObject<(HTMLDivElement | null)[]>;
 }) => {
   const sequencesBackgroundsRef = useRef<string[] | null>(null);
+  const sequencesDifferencesRef = useRef<Record<number, string[]>>({});
 
   const getSequencesBackgrounds = useCallback(() => {
     if (!isAllSequencesMounted) return null;
+
+    sequencesDifferencesRef.current = {};
 
     const sequencesCount = sequenceElementsRef.current?.length;
     const lineHeight = fontSize * sequencesCount;
@@ -33,6 +36,7 @@ export const useSequencesBackground = ({
       (amino) =>
         AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[amino]] ?? "transparent"
     );
+
     return sequenceElementsRef?.current?.map((sequenceElement, index) => {
       const sequence = sequences[index].split("") as AminoAcid[];
       const sequenceWidth = sequenceElement?.clientWidth ?? 0;
@@ -47,14 +51,13 @@ export const useSequencesBackground = ({
       const rowLettersNumber = Math.floor(sequenceLettersRatio);
       const rowsNumber = Math.ceil(sequence.length / rowLettersNumber);
 
-      const sequenceColors =
-        index === 0
-          ? referenceSequenceColors
-          : sequence?.map((amino, index) =>
-              amino === referenceSequenceAminoChain[index]
-                ? "transparent"
-                : AMINO_ACID_GROUP_COLORS[AMINO_ACID_GROUPS[amino]]
-            );
+      const sequenceColors = getSequenceColors(
+        index,
+        sequence,
+        referenceSequenceAminoChain,
+        referenceSequenceColors,
+        sequencesDifferencesRef
+      );
 
       return createSequenceGradient({
         colorStep: letterWidth,
@@ -107,6 +110,7 @@ export const useSequencesBackground = ({
 
   return {
     sequencesBackgroundsRef,
+    sequencesDifferencesRef,
     setSequencesBackground,
     updateSequencesBackground,
   };
@@ -127,7 +131,10 @@ export const useSequencesPosition = ({
     const sequencesCount = sequenceElementsRef?.current.length;
 
     sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
-      sequenceElement?.style.setProperty("top", `${index * fontSize - (sequencesCount * fontSize) / 2 + fontSize}px`);
+      sequenceElement?.style.setProperty(
+        "top",
+        `${index * fontSize - (sequencesCount * fontSize) / 2 + fontSize}px`
+      );
       sequenceElement?.style.setProperty("font-size", `${fontSize}px`);
       sequenceElement?.style.setProperty("line-height", `${sequencesCount}`);
     });

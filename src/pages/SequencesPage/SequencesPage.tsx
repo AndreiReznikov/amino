@@ -37,6 +37,7 @@ export const SequencesPage: React.FC = () => {
 
   const {
     sequencesBackgroundsRef,
+    sequencesDifferencesRef,
     setSequencesBackground,
     updateSequencesBackground,
   } = useSequencesBackground({
@@ -47,6 +48,8 @@ export const SequencesPage: React.FC = () => {
     letterWidth,
     sequenceElementsRef,
   });
+
+  // console.log(sequencesDifferencesRef);
 
   const { setSequencesPosition } = useSequencesPosition({
     fontSize,

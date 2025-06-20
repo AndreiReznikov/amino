@@ -13,6 +13,7 @@ export const SequencesList: React.FC<SequencesListProps> = memo(
     <ul className={styles.sequencesList}>
       {sequences?.map((sequence, index) => (
         <li
+          key={`${sequence}-${index}`}
           ref={(node) => {
             if (node) {
               sequenceElements[index] = node;
@@ -23,7 +24,6 @@ export const SequencesList: React.FC<SequencesListProps> = memo(
           }`}
         >
           <Sequence
-            key={`${sequence}-${index}`}
             sequence={sequence}
             isLastSequence={index === sequences.length - 1}
             onLastRender={onLastRender}
