@@ -99,18 +99,15 @@ export const useSequencesDifferences = ({
   }, [isBackgroundShown, sequenceElementsRef]);
 
   const updateSequencesBackground = useCallback(() => {
-    if (!isBackgroundShown) {
-      sequencesBackgroundsRef.current = null;
-      return;
-    }
-
     const currentBackgrounds = getSequencesBackgrounds();
+    sequencesBackgroundsRef.current = currentBackgrounds;
+
+    if (!isBackgroundShown) return;
 
     sequenceElementsRef?.current?.forEach((sequenceElement, index) => {
       if (!sequenceElement) return;
 
       sequenceElement.style.background = currentBackgrounds?.[index] ?? "";
-      sequencesBackgroundsRef.current = currentBackgrounds;
     });
   }, [
     getSequencesBackgrounds,

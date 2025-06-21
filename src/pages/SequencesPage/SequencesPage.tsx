@@ -85,8 +85,14 @@ export const SequencesPage: React.FC = () => {
     setIsAllSequencesMounted(true);
   }, []);
 
-  const handleOpenResultModal = useCallback(() => setResultModalOpened(true), []);
-  const handleCloseResultModal = useCallback(() => setResultModalOpened(false), []);
+  const handleOpenResultModal = useCallback(
+    () => setResultModalOpened(true),
+    []
+  );
+  const handleCloseResultModal = useCallback(
+    () => setResultModalOpened(false),
+    []
+  );
 
   useEffect(() => {
     if (!isAllSequencesMounted) return;
@@ -107,9 +113,6 @@ export const SequencesPage: React.FC = () => {
     };
   }, [
     isAllSequencesMounted,
-    isBackgroundShown,
-    sequenceElementsRef,
-    sequences,
     sequencesBackgroundsRef,
     setSequencesBackground,
     setSequencesPosition,
@@ -134,10 +137,7 @@ export const SequencesPage: React.FC = () => {
       >
         {sequences.length !== 0 && (
           <section>
-            <Button
-              variant="text"
-              onClick={handleOpenResultModal}
-            >
+            <Button variant="text" onClick={handleOpenResultModal}>
               Результат
             </Button>
 
