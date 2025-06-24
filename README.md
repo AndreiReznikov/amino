@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+# Инструмент для визуализации выравнивания аминокислотных последовательностей
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Демонстрация
 
-## Available Scripts
+[GitHub Pages]​(https://andreireznikov.github.io/amino/)
 
-In the project directory, you can run:
+## О проекте
 
-### `npm start`
+Инструмент предназначен для визуализации выравнивания двух аминокислотных последовательностей.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Пользователю доступны поля для ввода последовательностей, которые условно обозначены, как _эталонная_ и _целевая_. После ввода последовательностей и нажатия на кнопку _Выравнивание_ визуализация позволяет выявить их сходства и различия.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Для удобства добавлена кнопка с информацией об условных обозначениях и конфигурационная панель c селектором масштаба, переключателем фона, кнопкой Очистить.
 
-### `npm test`
+Также уделено внимание доступности (a11y) инструмента.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Требования к проекту
 
-### `npm run build`
+- Перенос с сохранением позиционирования текста последовательностей
+- Окрашивание фона каждого символа без добавления большого количества элементов в DOM
+- Корректная работа поиска по части последовательности
+- Возможность копирования последовательности при выделении текста
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Реализация
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Позиционирование последовательностей
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Элемент эталонной последовательности имеет свойство _position: relative_. Все остальные элементы последовательностей имеют _position: absolute_ (при желании можно добавить больше двух последовательностей). Элементы накладываются друг на друга.
 
-### `npm run eject`
+Для посимвольного переноса текста добавлены свойства _word-break: break-all_ и _overflow-wrap: break-word_.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Для каждого элемента последовательности задан _line-height (больше font-size в 2 раза)_. Это позволяет визуально расположить текст последовательностей друг под другом с сохранением позиционирования.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Позиция последовательности рассчитывается динамически в зависимости от выбранного масштаба и количества последовательностей.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![Позиционирование](./readme-img/aminopostition.jpg)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
