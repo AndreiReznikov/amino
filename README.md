@@ -2,7 +2,7 @@
 
 ## Демонстрация
 
-[GitHub Pages]​(https://andreireznikov.github.io/amino/)
+[GitHub Pages](https://andreireznikov.github.io/amino)
 
 ## О проекте
 
