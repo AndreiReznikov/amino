@@ -51,7 +51,7 @@ export const LegendPopover: React.FC<LegendPopoverProps> = ({
             id="amino-groups-title"
             gutterBottom
           >
-            Группы аминокислот
+            Свойства аминокислот
           </Typography>
 
           <IconButton onClick={onClose} size="small" aria-label="Закрыть">
